@@ -2,49 +2,54 @@
 
 /*
  * Design system
- * Scarlet is the ground, not an accent: it fills the hero and page openers.
- * Everything else is white, ink, and grays that lean slightly cool, like the
- * university's own gray. Square corners, hairline rules, one wide grotesque.
+ * The Oval at night. Black is the ground, scarlet is the light source, and the
+ * square block is the one repeating shape: it marks lists, fills buttons, and
+ * grows on hover. Hairlines divide; nothing is rounded.
  */
 @theme {
   --color-*: initial;
   --color-transparent: transparent;
   --color-current: currentColor;
   --color-white: #ffffff;
+  --color-black: #000000;
+  --color-coal: #0b0b0c;
+  --color-panel: #141416;
   --color-scarlet: #bb0000;
   --color-scarlet-dark: #8b0000;
-  --color-ink: #1a1a1a;
-  --color-gray-100: #f3f4f5;
-  --color-gray-200: #dfe2e4;
   --color-gray-400: #a7b1b7;
-  --color-gray-600: #5b6368;
-  --color-gray-800: #33383b;
 
   --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
 
-  --text-hero: clamp(2.375rem, 7vw, 6.75rem);
-  --text-hero--line-height: 0.96;
-  --text-title: clamp(2.25rem, 5.6vw, 5rem);
-  --text-title--line-height: 0.98;
-  --text-heading: clamp(1.75rem, 3.6vw, 3.25rem);
-  --text-heading--line-height: 1.04;
+  --text-hero: clamp(2.125rem, 10.4vw, 3.75rem);
+  --text-hero--line-height: 0.98;
+  --text-hero-wide: clamp(3.5rem, min(6.5vw, 11.5svh), 6.75rem);
+  --text-hero-wide--line-height: 0.96;
+  --text-title: clamp(2.375rem, 6.2vw, 6rem);
+  --text-title--line-height: 0.97;
+  --text-heading: clamp(1.875rem, 4vw, 3.75rem);
+  --text-heading--line-height: 1.02;
+  --text-cell: clamp(1.5rem, 2.2vw, 2.125rem);
+  --text-cell--line-height: 1.15;
   --text-subhead: clamp(1.25rem, 1.9vw, 1.625rem);
   --text-subhead--line-height: 1.2;
   --text-lead: clamp(1.125rem, 1.4vw, 1.3125rem);
   --text-lead--line-height: 1.5;
+
+  --ease-block: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 @layer base {
   html {
-    background: var(--color-ink);
+    background: var(--color-black);
+    color-scheme: dark;
     scroll-padding-top: 6rem;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    background: var(--color-white);
-    color: var(--color-ink);
+    background: var(--color-black);
+    color: var(--color-white);
     font-family: var(--font-sans);
     font-size: 1.0625rem;
     line-height: 1.6;
@@ -68,26 +73,35 @@
   }
 
   ::selection {
-    background: var(--color-ink);
+    background: var(--color-scarlet);
     color: var(--color-white);
   }
 }
 
 @utility wide {
-  font-stretch: 118%;
-  font-weight: 750;
-  letter-spacing: -0.035em;
+  font-stretch: 116%;
+  font-weight: 620;
+  letter-spacing: -0.04em;
 }
 
 @utility shell {
   width: 100%;
-  max-width: 88rem;
+  max-width: 92rem;
   margin-inline: auto;
   padding-inline: clamp(1.25rem, 4vw, 4rem);
 }
 
 @utility band {
-  padding-block: clamp(4.5rem, 9vw, 9rem);
+  padding-block: clamp(5rem, 10vw, 10rem);
+}
+
+@utility muted {
+  color: color-mix(in srgb, currentColor 72%, transparent);
+}
+
+/* Hairline that takes its color from the text around it. */
+@utility rule {
+  border-color: color-mix(in srgb, currentColor 18%, transparent);
 }
 
 @utility link {
@@ -99,6 +113,192 @@
   }
 }
 
+/* A block that grows from the corner to fill its parent on hover or focus. */
+@utility block-fill {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 calc(-1 * var(--bleed, 0px));
+    z-index: -1;
+    background: var(--fill, var(--color-scarlet));
+    clip-path: inset(0 100% 100% 0);
+    transition: clip-path 420ms var(--ease-block);
+  }
+  &:hover::before,
+  &:focus-visible::before {
+    clip-path: inset(0);
+  }
+}
+
+/* Type that widens along Archivo's width axis when its row is active. */
+@utility widen {
+  font-stretch: 100%;
+  font-weight: 560;
+  letter-spacing: -0.035em;
+  transition:
+    font-stretch 380ms var(--ease-block),
+    color 200ms;
+  .group:hover &,
+  .group:focus-visible &,
+  [data-active="true"] & {
+    font-stretch: 122%;
+  }
+}
+
+@utility tilt {
+  perspective: 1100px;
+  & > * {
+    transform: rotateX(62deg) rotateZ(-14deg);
+  }
+}
+
+.progress {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* The header stays put while pages change beneath it. */
+.site-header {
+  view-transition-name: site-header;
+}
+::view-transition-group(site-header) {
+  z-index: 10;
+}
+
+/* Motion. Off unless the visitor allows it, and every element is fully visible
+   when it is off or unsupported. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .enter {
+    animation: enter 900ms var(--ease-block) backwards;
+    animation-delay: var(--delay, 0ms);
+  }
+
+  .hero-line {
+    animation: hero-line 1100ms var(--ease-block) backwards;
+    animation-delay: var(--delay, 0ms);
+  }
+
+  .tilt > * {
+    animation: orbit 160s linear infinite;
+  }
+
+  .glyph [data-draw] {
+    stroke-dasharray: 1;
+    animation: draw 1100ms var(--ease-block) backwards;
+  }
+  .glyph [data-pop] {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pop 500ms var(--ease-block) 350ms backwards;
+  }
+
+  dialog[open] .menu-item {
+    animation: enter 520ms var(--ease-block) backwards;
+    animation-delay: calc(var(--i) * 40ms);
+  }
+
+  @supports (animation-timeline: view()) {
+    .rise {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+    .words {
+      view-timeline: --words block;
+    }
+    .words > span {
+      animation: ink linear both;
+      animation-timeline: --words;
+      animation-range: cover calc(16% + var(--at) * 30%) cover calc(24% + var(--at) * 30%);
+    }
+    .progress {
+      animation: progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+
+  ::view-transition-group(.page) {
+    animation: none;
+  }
+  ::view-transition-old(.page) {
+    animation: vt-out 140ms ease-in both;
+  }
+  ::view-transition-new(.page) {
+    animation: vt-in 420ms var(--ease-block) both;
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+@keyframes hero-line {
+  from {
+    opacity: 0;
+    font-stretch: 62%;
+    letter-spacing: -0.02em;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+}
+@keyframes ink {
+  from {
+    color: color-mix(in srgb, currentColor 34%, transparent);
+  }
+}
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pop {
+  from {
+    transform: scale(0);
+  }
+}
+@keyframes orbit {
+  from {
+    transform: rotateX(62deg) rotateZ(-14deg);
+  }
+  to {
+    transform: rotateX(62deg) rotateZ(346deg);
+  }
+}
+@keyframes vt-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -106,5 +306,10 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

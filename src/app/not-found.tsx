@@ -8,11 +8,7 @@ export default function NotFound() {
   return (
     <PageHero
       title="This page isn’t on the chain."
-      action={
-        <Action href="/" variant="inverse">
-          Go to the homepage
-        </Action>
-      }
+      action={<Action href="/">Go to the homepage</Action>}
     >
       The address may have changed, or the link may be wrong.
     </PageHero>

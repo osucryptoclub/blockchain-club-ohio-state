@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Action } from "@/components/action";
-import { PageHero, Split } from "@/components/page-hero";
+import { PageHero } from "@/components/page-hero";
+import { ScrollWords } from "@/components/scroll-words";
+import { Band, Cells, Closing, Rows, Split } from "@/components/section";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -48,38 +50,35 @@ export default function About() {
     <>
       <PageHero
         title="Students building what comes next."
-        action={
-          <Action href="/join" variant="inverse">
-            Join the Club
-          </Action>
-        }
+        action={<Action href="/join">Join the Club</Action>}
       >
         {site.name} brings together students, developers, researchers, and founders who are interested in
         blockchain, Web3, smart contracts, and decentralized systems.
       </PageHero>
 
       <Split title="Our mission">
-        <p className="wide text-subhead lg:text-heading">
-          Build, learn, research, and connect through blockchain technology.
-        </p>
-        <p className="mt-6 max-w-[62ch] text-gray-600">
+        <ScrollWords
+          className="wide text-heading"
+          text="Build, learn, research, and connect through blockchain technology."
+        />
+        <p className="muted mt-8 max-w-[62ch] text-lead">
           There is room here for people who write protocols and contracts, and for people who study markets,
           policy, cryptography, or design. What ties it together is wanting to understand how these systems
           work before deciding what to think of them.
         </p>
       </Split>
 
-      <Split title="Why blockchain matters" className="bg-ink text-white">
+      <Split title="Why blockchain matters" tone="scarlet">
         <div className="grid max-w-[62ch] gap-6">
           <p className="text-lead">
             Most shared records depend on one organization keeping them honest. Blockchains let people who
             don’t know or trust each other keep a record together, and let anyone verify it.
           </p>
-          <p className="text-gray-400">
+          <p>
             That makes new things possible: money that settles in minutes across borders, software that
             cannot be quietly changed, and proof of a fact without handing over the data behind it.
           </p>
-          <p className="text-gray-400">
+          <p>
             It also brings real costs in speed, complexity, security, and misuse. Studying the trade-offs
             honestly is part of the work.
           </p>
@@ -87,29 +86,14 @@ export default function About() {
       </Split>
 
       <Split title="What you gain">
-        <dl className="border-t border-ink">
-          {gains.map(({ title, text }) => (
-            <div key={title} className="grid gap-x-8 gap-y-1 border-b border-gray-200 py-6 sm:grid-cols-[14rem_minmax(0,1fr)]">
-              <dt className="font-bold">{title}</dt>
-              <dd className="text-gray-600">{text}</dd>
-            </div>
-          ))}
-        </dl>
+        <Rows items={gains} />
       </Split>
 
-      <section className="band bg-gray-100">
-        <div className="shell">
-          <h2 className="wide text-heading">What we commit to</h2>
-          <dl className="mt-12 grid gap-10 md:grid-cols-3">
-            {commitments.map(({ title, text }) => (
-              <div key={title} className="border-t-4 border-scarlet pt-5">
-                <dt className="wide text-subhead">{title}</dt>
-                <dd className="mt-2 max-w-[36ch] text-gray-600">{text}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
+      <Band title="What we commit to">
+        <Cells items={commitments} />
+      </Band>
+
+      <Closing title="Come see how it works." href="/join" label="Join the Club" />
     </>
   );
 }

@@ -5,16 +5,16 @@ import { disclaimer, navigation, site } from "@/content/site";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-ink text-white">
+    <footer className="rule relative overflow-hidden border-t bg-black text-white">
       <div className="shell pt-16 pb-10 lg:pt-24">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_auto_auto] lg:gap-24">
-          <div>
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-12">
+          <div className="sm:col-span-2 lg:col-span-5">
             <Mark className="h-12 w-18" />
-            <p className="wide mt-6 max-w-[16ch] text-heading text-balance">{site.name}</p>
+            <p className="muted mt-6 max-w-[30ch] text-lead">{site.tagline}</p>
           </div>
-          <nav aria-label="Footer">
+          <nav aria-label="Footer" className="lg:col-span-4">
             <h2 className="text-sm text-gray-400">Site</h2>
-            <ul className="mt-3 grid gap-x-10 sm:max-lg:grid-cols-2">
+            <ul className="mt-3 grid grid-cols-2 gap-x-10">
               {[...navigation, { href: "/join", label: "Join the Club" }].map(({ href, label }) => (
                 <li key={href}>
                   <Link href={href} className="inline-block py-1.5 hover:underline hover:underline-offset-4">
@@ -24,9 +24,16 @@ export function SiteFooter() {
               ))}
             </ul>
           </nav>
-          <div>
+          <div className="lg:col-span-3">
             <h2 className="text-sm text-gray-400">Community</h2>
             <ul className="mt-3">
+              {site.email && (
+                <li className="py-1.5">
+                  <a href={`mailto:${site.email}`} className="link">
+                    {site.email}
+                  </a>
+                </li>
+              )}
               {site.channels.map((c) => (
                 <li key={c.id} className="py-1.5">
                   <ChannelLink channel={c} />
@@ -35,8 +42,13 @@ export function SiteFooter() {
             </ul>
           </div>
         </div>
-        <div className="mt-16 border-t border-gray-800 pt-6">
-          <p className="max-w-[80ch] text-sm text-gray-400">{disclaimer}</p>
+
+        <p className="wide rise mt-20 text-[min(10.9vw,10.15rem)] leading-[0.92] lg:mt-28">
+          Blockchain Club <span className="block">at Ohio State</span>
+        </p>
+
+        <div className="rule mt-14 border-t pt-6">
+          <p className="max-w-[90ch] text-sm text-gray-400">{disclaimer}</p>
         </div>
       </div>
     </footer>

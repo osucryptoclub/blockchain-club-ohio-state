@@ -1,4 +1,7 @@
-/** The nine areas the club works in. Edit copy here; pages update themselves. */
+/**
+ * The areas the club works in. Edit copy here; pages update themselves. Each
+ * slug also picks a diagram in src/components/area-glyph.tsx.
+ */
 
 export type AreaGroup = "Build" | "Understand" | "Apply";
 
@@ -61,7 +64,7 @@ export const areas: Area[] = [
   },
   {
     slug: "web3-dapps",
-    name: "Web3 & Decentralized Applications",
+    name: "Decentralized Applications",
     group: "Build",
     question: "Can an app keep working after its company shuts down?",
     summary:
@@ -79,7 +82,7 @@ export const areas: Area[] = [
   },
   {
     slug: "digital-assets",
-    name: "Cryptocurrency & Digital Assets",
+    name: "Cryptocurrency Research",
     group: "Understand",
     question: "What gives a digital asset value, and who decides?",
     summary:
@@ -88,7 +91,7 @@ export const areas: Area[] = [
   },
   {
     slug: "defi",
-    name: "DeFi",
+    name: "Web3 & DeFi",
     group: "Understand",
     question: "How can a formula replace an order book?",
     summary:
@@ -100,6 +103,15 @@ export const areas: Area[] = [
 def amount_out(x, y, dx):
     return y * dx / (x + dx)`,
     },
+  },
+  {
+    slug: "cryptography",
+    name: "Cryptography",
+    group: "Understand",
+    question: "How can you prove a message is yours without sharing your key?",
+    summary:
+      "The math everything else here rests on: hashing, signatures, and the hard problems that make them safe, along with what happens when those problems stop being hard.",
+    topics: ["Hash functions", "Digital signatures", "Elliptic curves", "Post-quantum schemes"],
   },
   {
     slug: "zero-knowledge",

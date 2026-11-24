@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Action } from "@/components/action";
-import { PageHero, Split } from "@/components/page-hero";
+import { PageHero } from "@/components/page-hero";
+import { Band, Cells, Closing, Split } from "@/components/section";
 import { site } from "@/content/site";
 import { partnerships, sponsors } from "@/content/sponsors";
 
@@ -16,28 +17,17 @@ export default function Sponsors() {
     <>
       <PageHero
         title="Back the next builders."
-        action={
-          <Action href="/contact" variant="inverse">
-            Start a conversation
-          </Action>
-        }
+        action={<Action href="/contact">Start a conversation</Action>}
       >
         Companies, protocols, and funds can support students who are serious about this technology, and get to
         know their work early.
       </PageHero>
 
-      <Split title="Ways to work together">
-        <dl className="border-t border-ink">
-          {partnerships.map(({ title, body }) => (
-            <div key={title} className="grid gap-x-8 gap-y-2 border-b border-gray-200 py-8 sm:grid-cols-[14rem_minmax(0,1fr)]">
-              <dt className="wide text-subhead">{title}</dt>
-              <dd className="max-w-[56ch] text-gray-600">{body}</dd>
-            </div>
-          ))}
-        </dl>
-      </Split>
+      <Band title="Ways to work together">
+        <Cells columns={2} items={partnerships.map(({ title, body }) => ({ title, text: body }))} />
+      </Band>
 
-      <Split title="Our sponsors" className="bg-gray-100">
+      <Split title="Our sponsors" tone="paper">
         {sponsors.length > 0 ? (
           <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
             {sponsors.map((s) => (
@@ -66,14 +56,7 @@ export default function Sponsors() {
         )}
       </Split>
 
-      <section className="bg-scarlet py-20 text-white lg:py-28">
-        <div className="shell flex flex-wrap items-end justify-between gap-8">
-          <h2 className="wide max-w-[18ch] text-heading">Tell us what you’re working on.</h2>
-          <Action href="/contact" variant="inverse">
-            Contact the club
-          </Action>
-        </div>
-      </section>
+      <Closing title="Tell us what you’re working on." href="/contact" label="Contact the club" />
     </>
   );
 }
