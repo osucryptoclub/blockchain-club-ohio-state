@@ -9,12 +9,18 @@ import { OvalScene } from "@/components/oval-scene";
 import { OvalStatic } from "@/components/oval-static";
 import { PhotoWall } from "@/components/photo-wall";
 import { ProjectList } from "@/components/project-list";
+import { PeopleGrid, PersonCard } from "@/components/person-card";
 import { ScrollWords } from "@/components/scroll-words";
 import { Cells, Rows } from "@/components/section";
+import { SponsorGrid } from "@/components/sponsor-grid";
+import { applications } from "@/content/applications";
+import { cohortStatuses } from "@/content/cohorts";
 import { collaborate } from "@/content/community";
 import { projectKindList, projects } from "@/content/projects";
 import { site } from "@/content/site";
+import { sponsors } from "@/content/sponsors";
 import { buildChain } from "@/lib/chain";
+import { cohortProjects, groupMembers, orderedCohorts } from "@/lib/roster";
 import { getEvents } from "@/lib/events";
 
 export const metadata: Metadata = {
@@ -36,6 +42,8 @@ const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 
 export default async function Home() {
   const { upcoming } = await getEvents();
+  const cohort = orderedCohorts[0];
+  const leaders = (["president", "vice-president", "technical"] as const).flatMap((g) => groupMembers(g));
 
   return (
     <>
@@ -101,6 +109,18 @@ export default async function Home() {
         </div>
       </section>
 
+      {sponsors.length > 0 && (
+        <section id="sponsors" className="band bg-white text-black">
+          <div className="shell">
+            <div className="mb-12 flex flex-wrap items-end justify-between gap-8 lg:mb-16">
+              <h2 className="rise wide max-w-[16ch] text-heading">Backed by people building the industry.</h2>
+              <TextLink href="/sponsors">Sponsors &amp; partners</TextLink>
+            </div>
+            <SponsorGrid sponsors={sponsors} />
+          </div>
+        </section>
+      )}
+
       <section id="what-we-do" className="band rule border-t">
         <div className="shell">
           <div className="mb-14 flex flex-wrap items-end justify-between gap-8 lg:mb-20">
@@ -146,7 +166,50 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="events" className="band">
+      {cohort && (
+        <section id="cohorts" className="band relative isolate overflow-hidden">
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-[radial-gradient(56rem_30rem_at_0%_100%,#5c0000,transparent_70%)]"
+          />
+          <div className="shell grid gap-12 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <p className="flex items-center gap-3 font-mono text-sm tracking-wider text-gray-400 uppercase">
+                <span aria-hidden="true" className="size-2 animate-pulse bg-scarlet" />
+                {cohortStatuses[cohort.status]}
+              </p>
+              <h2 className="rise wide mt-5 text-heading">
+                The {cohort.name} cohort, {cohort.term}.
+              </h2>
+              <p className="muted mt-6 max-w-[46ch] text-lead">{cohort.summary}</p>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <Action href={`/cohorts/${cohort.slug}`}>Meet the cohort</Action>
+                <Action href="/join#apply" variant="outline">
+                  {applications.opens ? "Apply to the next one" : "Get notified for the next one"}
+                </Action>
+              </div>
+            </div>
+            <ul className="rule grid self-end border-t border-l sm:grid-cols-2 lg:col-span-7">
+              {(cohort.teams ?? []).map((t) => (
+                <li key={t.name} className="rule border-r border-b p-6 lg:p-8">
+                  <p className="font-mono text-xs tracking-wider text-gray-400 uppercase">Team</p>
+                  <h3 className="wide mt-3 text-cell">{t.name}</h3>
+                  <p className="muted mt-2">{t.focus}</p>
+                </li>
+              ))}
+              {cohortProjects(cohort.slug).map((p) => (
+                <li key={p.slug} className="rule border-r border-b p-6 lg:p-8">
+                  <p className="font-mono text-xs tracking-wider text-gray-400 uppercase">Project</p>
+                  <h3 className="wide mt-3 text-cell">{p.title}</h3>
+                  <p className="mt-2 font-mono text-sm">{p.stack.join(" · ")}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      <section id="events" className="band rule border-t">
         <div className="shell">
           <div className="mb-14 grid gap-6 lg:mb-20 lg:grid-cols-12 lg:items-end">
             <h2 className="rise wide text-heading lg:col-span-7">Show up. Build something.</h2>
@@ -185,6 +248,22 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {leaders.length > 0 && (
+        <section id="team" className="band rule border-t">
+          <div className="shell">
+            <div className="mb-12 flex flex-wrap items-end justify-between gap-8 lg:mb-16">
+              <h2 className="rise wide text-heading">Who runs it.</h2>
+              <TextLink href="/team">The whole team</TextLink>
+            </div>
+            <PeopleGrid>
+              {leaders.slice(0, 3).map((m) => (
+                <PersonCard key={m.id} person={m} role={m.team?.role} />
+              ))}
+            </PeopleGrid>
+          </div>
+        </section>
+      )}
 
       <section className="grid lg:grid-cols-2">
         <div className="bg-white py-24 text-black pr-[clamp(1.25rem,4vw,4rem)] pl-[calc(max(0px,(100vw-92rem)/2)+clamp(1.25rem,4vw,4rem))] lg:py-36">

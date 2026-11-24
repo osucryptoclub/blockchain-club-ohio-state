@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Action } from "@/components/action";
 import { ChannelList } from "@/components/channel-list";
+import { Countdown } from "@/components/countdown";
 import { PageHero } from "@/components/page-hero";
 import { ScrollWords } from "@/components/scroll-words";
 import { Band, Cells, Rows, Split } from "@/components/section";
+import { applications } from "@/content/applications";
 import { collaborate, learning, reasons } from "@/content/community";
 import { channel, site } from "@/content/site";
 
@@ -13,6 +15,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/join" },
 };
 
+const steps = [
+  { title: "Come to a meeting", text: "Meetings and events are open to every student, with no application." },
+  { title: "Apply", text: "When the window opens, apply to the next cohort. It takes a few minutes." },
+  { title: "Build", text: "Cohort members work in small teams on real club software, with review from leads." },
+  { title: "Get recognized", text: "Your name, team, and work are listed on the cohort page, if you want them to be." },
+];
+
 export default function Join() {
   const discord = channel("discord");
   return (
@@ -20,15 +29,30 @@ export default function Join() {
       <PageHero
         title="Join the Club."
         action={
-          discord.url ? (
-            <Action href={discord.url}>Join our Discord</Action>
-          ) : (
-            <Action href="#channels">See where to find us</Action>
-          )
+          <>
+            <Action href="#apply">Apply to a cohort</Action>
+            {discord.url ? (
+              <Action href={discord.url} variant="outline">
+                Join our Discord
+              </Action>
+            ) : (
+              <Action href="#channels" variant="outline">
+                See where to find us
+              </Action>
+            )}
+          </>
         }
       >
         Learn how decentralized technology works by building it with other Ohio State students.
       </PageHero>
+
+      <Split id="apply" title="Apply to a cohort" tone="scarlet">
+        <Countdown apps={applications} />
+      </Split>
+
+      <Split title="How it works">
+        <Rows items={steps} ordered />
+      </Split>
 
       <Band title="Why join">
         <Cells items={reasons} />
@@ -60,7 +84,7 @@ export default function Join() {
         <Rows items={collaborate} />
       </Split>
 
-      <Split id="channels" title="Where to find us" tone="scarlet">
+      <Split id="channels" title="Where to find us" tone="paper">
         <ChannelList />
       </Split>
     </>

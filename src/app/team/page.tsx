@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { TextLink } from "@/components/action";
 import { Mark } from "@/components/logo";
 import { PageHero } from "@/components/page-hero";
+import { PeopleGrid, PersonCard } from "@/components/person-card";
 import { Closing } from "@/components/section";
 import { site } from "@/content/site";
-import { team, type Member } from "@/content/team";
+import { team } from "@/content/team";
+import { groupMembers, orderedCohorts } from "@/lib/roster";
 
 export const metadata: Metadata = {
   title: "Team",
@@ -12,36 +14,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/team" },
 };
 
-function Person({ member }: { member: Member }) {
-  return (
-    <li className="min-w-0">
-      {member.photo && (
-        <Image
-          src={member.photo}
-          alt=""
-          width={480}
-          height={480}
-          className="mb-4 aspect-square w-full max-w-72 bg-panel object-cover"
-        />
-      )}
-      <p className="text-lg font-bold">{member.name}</p>
-      <p>{member.role}</p>
-      {member.major && <p className="muted">{member.major}</p>}
-      {member.links && (
-        <p className="mt-2 flex flex-wrap gap-4 text-sm">
-          {member.links.map((l) => (
-            <a key={l.url} href={l.url} rel="noopener" className="link" aria-label={`${member.name} on ${l.label}`}>
-              {l.label}
-            </a>
-          ))}
-        </p>
-      )}
-    </li>
-  );
-}
-
 export default function Team() {
-  const announced = team.some((group) => group.members.length > 0);
+  const groups = team.map((group) => ({ group, members: groupMembers(group.id) }));
+  const announced = groups.some((g) => g.members.length > 0);
   return (
     <>
       <PageHero title="Run by students.">
@@ -53,31 +28,44 @@ export default function Team() {
         <div className="shell">
           <h2 className="sr-only">Leadership and teams</h2>
           <ul className="rule grid border-t border-l md:grid-cols-2">
-            {team.map((group) => (
+            {groups.map(({ group, members }) => (
               <li
-                key={group.name}
-                className={`rule flex flex-col justify-between gap-8 md:min-h-64 border-r border-b p-6 lg:p-8 ${group.members.length > 0 ? "md:col-span-2" : ""}`}
+                key={group.id}
+                className={`rule flex flex-col justify-between gap-8 border-r border-b p-6 md:min-h-64 lg:p-8 ${members.length > 0 ? "md:col-span-2" : ""}`}
               >
                 <div>
                   <h3 className="wide text-cell">{group.name}</h3>
                   <p className="muted mt-3 max-w-[40ch]">{group.responsibility}</p>
                 </div>
-                <div>
-                  {group.members.length > 0 ? (
-                    <ul className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
-                      {group.members.map((m) => (
-                        <Person key={m.name} member={m} />
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="flex items-center gap-4">
-                      <Mark className="h-6 w-9 text-scarlet" />
-                      {group.placeholder ?? "To be announced"}
-                    </p>
-                  )}
-                </div>
+                {members.length > 0 ? (
+                  <PeopleGrid>
+                    {members.map((m) => (
+                      <PersonCard key={m.id} person={m} role={m.team?.role} />
+                    ))}
+                  </PeopleGrid>
+                ) : (
+                  <p className="flex items-center gap-4">
+                    <Mark className="h-6 w-9 text-scarlet" />
+                    {group.placeholder ?? "To be announced"}
+                  </p>
+                )}
               </li>
             ))}
+            <li className="rule flex flex-col justify-between gap-8 border-r border-b p-6 md:col-span-2 md:min-h-48 lg:p-8">
+              <div>
+                <h3 className="wide text-cell">Cohort members</h3>
+                <p className="muted mt-3 max-w-[56ch]">
+                  Everyone building in a cohort is recognized on that cohort’s page, with their team and their work.
+                </p>
+              </div>
+              <p className="flex flex-wrap gap-x-8 gap-y-3">
+                {orderedCohorts.map((c) => (
+                  <TextLink key={c.slug} href={`/cohorts/${c.slug}`}>
+                    {c.name}, {c.term}
+                  </TextLink>
+                ))}
+              </p>
+            </li>
           </ul>
         </div>
       </section>
