@@ -167,6 +167,59 @@
   z-index: 10;
 }
 
+/* Introduction. Covers the page while <html> carries data-intro. */
+.intro {
+  display: none;
+}
+html[data-intro] .intro {
+  display: block;
+}
+html[data-intro]:not([data-intro="out"]) {
+  overflow: hidden;
+}
+html[data-intro]:not([data-intro="out"]) main * {
+  animation-play-state: paused;
+}
+.intro-mask {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.06em;
+  margin-block: -0.06em;
+}
+.intro-mask > span {
+  display: block;
+}
+.intro-title {
+  font-size: clamp(2.4rem, 12.1vw, 17rem);
+  font-weight: 680;
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+.intro-title [data-line] {
+  font-stretch: var(--stretch, 116%);
+  white-space: nowrap;
+}
+.intro-bar {
+  display: block;
+  width: fit-content;
+  background: var(--color-scarlet);
+  padding: 0.95em 1.3em;
+  font-size: clamp(0.95rem, 2.5vw, 3.1rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+@media (width < 48rem) {
+  .intro-bar {
+    margin-top: 1.1rem;
+  }
+}
+.intro-scrim {
+  background: linear-gradient(to top, rgb(0 0 0 / 0.88), rgb(0 0 0 / 0.5) 50%, transparent);
+}
+
 /* Motion. Off unless the visitor allows it, and every element is fully visible
    when it is off or unsupported. */
 @media (prefers-reduced-motion: no-preference) {
@@ -208,6 +261,10 @@
       animation: rise linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 100%;
+    }
+    .drift {
+      animation: drift linear both;
+      animation-timeline: view();
     }
     .words {
       view-timeline: --words block;
@@ -251,6 +308,14 @@
   from {
     opacity: 0;
     transform: translateY(3rem);
+  }
+}
+@keyframes drift {
+  from {
+    transform: scale(1.07) translateY(-2%);
+  }
+  to {
+    transform: scale(1.07) translateY(2%);
   }
 }
 @keyframes ink {

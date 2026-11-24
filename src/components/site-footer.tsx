@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChannelLink } from "@/components/channel-link";
-import { Mark } from "@/components/logo";
+import { Seal } from "@/components/logo";
 import { disclaimer, navigation, site } from "@/content/site";
 
 export function SiteFooter() {
@@ -9,7 +9,7 @@ export function SiteFooter() {
       <div className="shell pt-16 pb-10 lg:pt-24">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-12">
           <div className="sm:col-span-2 lg:col-span-5">
-            <Mark className="h-12 w-18" />
+            <Seal className="size-28" sizes="112px" />
             <p className="muted mt-6 max-w-[30ch] text-lead">{site.tagline}</p>
           </div>
           <nav aria-label="Footer" className="lg:col-span-4">
@@ -49,6 +49,13 @@ export function SiteFooter() {
 
         <div className="rule mt-14 border-t pt-6">
           <p className="max-w-[90ch] text-sm text-gray-400">{disclaimer}</p>
+          {/* A full load, because the choice to play is made before first paint. */}
+          <p className="mt-4 text-sm motion-reduce:hidden">
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a href="/?intro" className="link text-gray-400 hover:text-white">
+              Replay the introduction
+            </a>
+          </p>
         </div>
       </div>
     </footer>

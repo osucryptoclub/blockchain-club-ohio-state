@@ -12,6 +12,7 @@ You don't need to touch the layout to keep the site current. Everything officers
 | --- | --- |
 | Email, Discord, GroupMe, and social links | `src/content/site.ts` |
 | Events | `src/content/events.ts` |
+| Photos and the order of the introduction | `src/content/photos.ts` (files in `src/assets/photos/`) |
 | Projects, research, and hackathon work | `src/content/projects.ts` |
 | Leadership and teams | `src/content/team.ts` |
 | Sponsors and partnership options | `src/content/sponsors.ts` |
@@ -77,6 +78,7 @@ tests/          Tests for src/lib
 Two parts are worth knowing before you change them:
 
 - **The Oval network** (`src/lib/oval.ts`, `src/lib/scene.ts`, `src/components/oval-scene.tsx`) is the club's signature graphic: the crossing paths of the Oval as a lit 3D scene with a block at every crossing. Its shape is inspired by the Oval and is not a map of it. Clicking a block runs a shortest-path broadcast to every other block. It measures the hero copy and places itself clear of it.
+- **The introduction** (`src/components/intro/`) plays once per session on the home page. `intro-script.tsx` decides before first paint, `timeline.ts` holds the GSAP timing, and `stage.ts` draws everything in one WebGL canvas. It is skipped for reduced motion, data saving, and browsers without WebGL 2. Open `/?intro` to replay it.
 - **The chain demo** (`src/lib/chain.ts`, `src/components/chain-demo.tsx`) hashes three blocks with SHA-256 in the browser.
 
 ## Brand
@@ -97,7 +99,7 @@ Type is Archivo, with a wide cut for headings, and IBM Plex Mono for code and ha
 
 Always write the name as **Blockchain Club at Ohio State**.
 
-The mark is original artwork. The site uses no Ohio State logos, Block O, Brutus, or seal. University names and marks need approval from [Trademark and Licensing Services](https://trademarklicensing.osu.edu/page/student-request), and registered student organizations must carry the university's disclaimer. The `registration` setting in `src/content/site.ts` controls which disclaimer the footer shows. Leave it as `"unconfirmed"` until the club's registration under this name is active.
+The header and footer use the club's seal (`src/assets/club-logo.jpg`, taken from the club's GitHub organization). It carries the earlier name, The Cryptocurrency Club, along with "The Ohio State University" and a buckeye leaf, so confirm it is cleared before launch. The Oval mark used elsewhere is original artwork. The site uses no Block O, Brutus, or university seal. University names and marks need approval from [Trademark and Licensing Services](https://trademarklicensing.osu.edu/page/student-request), and registered student organizations must carry the university's disclaimer. The `registration` setting in `src/content/site.ts` controls which disclaimer the footer shows. Leave it as `"unconfirmed"` until the club's registration under this name is active.
 
 ## Contribute
 

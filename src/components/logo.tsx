@@ -1,3 +1,15 @@
+import Image from "next/image";
+import logo from "@/assets/club-logo.jpg";
+
+/** The club's seal. The file has white corners, so it is clipped to its circle. */
+export function Seal({ className = "", sizes, eager = false }: { className?: string; sizes: string; eager?: boolean }) {
+  return (
+    <span className={`block shrink-0 overflow-hidden rounded-full ${className}`}>
+      <Image src={logo} alt="" sizes={sizes} loading={eager ? "eager" : "lazy"} className="size-full scale-[1.04] object-cover" />
+    </span>
+  );
+}
+
 /** Club mark: four paths crossing a ring, with a block where they meet. Original artwork. */
 export function Mark({ className }: { className?: string }) {
   return (
@@ -15,7 +27,7 @@ export function Mark({ className }: { className?: string }) {
 export function Wordmark() {
   return (
     <span className="flex items-center gap-3">
-      <Mark className="h-8 w-12 shrink-0" />
+      <Seal className="size-13" sizes="52px" eager />
       <span className="text-[0.9375rem] leading-[1.15]">
         <span className="block font-bold tracking-tight">Blockchain Club </span>
         <span className="block">at Ohio State</span>
