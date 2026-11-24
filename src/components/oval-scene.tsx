@@ -68,6 +68,11 @@ export function OvalScene() {
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
+    // The introduction covers the page; the Oval waits and rises as it lifts.
+    const covered = () => {
+      const { intro } = document.documentElement.dataset;
+      return intro !== undefined && intro !== "out";
+    };
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
     let view = frameCamera(canvas);
     let wave: Wave | null = null;
@@ -334,7 +339,7 @@ export function OvalScene() {
 
     function tick(now: number) {
       frame = 0;
-      const moving = !still.matches && !pausedRef.current;
+      const moving = !still.matches && !pausedRef.current && !covered();
       const dt = last && moving ? Math.min((now - last) / 1000, 0.05) : 0;
       last = moving ? now : 0;
       if (moving) step(dt);
@@ -402,10 +407,17 @@ export function OvalScene() {
     canvas.addEventListener("click", onClick);
     still.addEventListener("change", request);
     // One broadcast on arrival shows what the graphic does.
-    const intro = window.setTimeout(() => !still.matches && start(9, false), 1500);
+    let intro = 0;
+    const arrive = () => {
+      request();
+      intro = window.setTimeout(() => !still.matches && start(9, false), 1500);
+    };
+    if (covered()) window.addEventListener("intro:out", arrive, { once: true });
+    else arrive();
 
     return () => {
       window.clearTimeout(intro);
+      window.removeEventListener("intro:out", arrive);
       cancelAnimationFrame(frame);
       resize.disconnect();
       watch.disconnect();

@@ -49,6 +49,13 @@ export function SiteFooter() {
 
         <div className="rule mt-14 border-t pt-6">
           <p className="max-w-[90ch] text-sm text-gray-400">{disclaimer}</p>
+          {/* A full load, because the choice to play is made before first paint. */}
+          <p className="mt-4 text-sm motion-reduce:hidden">
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a href="/?intro" className="link text-gray-400 hover:text-white">
+              Replay the introduction
+            </a>
+          </p>
         </div>
       </div>
     </footer>

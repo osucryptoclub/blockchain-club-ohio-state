@@ -7,6 +7,7 @@ import { ChannelList } from "@/components/channel-list";
 import { EventKinds, EventList } from "@/components/event-list";
 import { OvalScene } from "@/components/oval-scene";
 import { OvalStatic } from "@/components/oval-static";
+import { PhotoWall } from "@/components/photo-wall";
 import { ProjectList } from "@/components/project-list";
 import { ScrollWords } from "@/components/scroll-words";
 import { Cells, Rows } from "@/components/section";
@@ -88,6 +89,15 @@ export default async function Home() {
           <div className="mt-16 lg:mt-24">
             <Cells items={verbs} columns={4} />
           </div>
+        </div>
+      </section>
+
+      <section id="photos" aria-labelledby="photos-title" className="pb-[clamp(5rem,10vw,10rem)]">
+        <div className="shell">
+          <h2 id="photos-title" className="rise wide mb-12 max-w-[18ch] text-heading lg:mb-16">
+            From the classroom to the conference floor.
+          </h2>
+          <PhotoWall />
         </div>
       </section>
 
