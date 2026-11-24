@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/*
+ * Design system
+ * Scarlet is the ground, not an accent: it fills the hero and page openers.
+ * Everything else is white, ink, and grays that lean slightly cool, like the
+ * university's own gray. Square corners, hairline rules, one wide grotesque.
+ */
+@theme {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+  --color-scarlet: #bb0000;
+  --color-scarlet-dark: #8b0000;
+  --color-ink: #1a1a1a;
+  --color-gray-100: #f3f4f5;
+  --color-gray-200: #dfe2e4;
+  --color-gray-400: #a7b1b7;
+  --color-gray-600: #5b6368;
+  --color-gray-800: #33383b;
+
+  --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
+
+  --text-hero: clamp(2.375rem, 7vw, 6.75rem);
+  --text-hero--line-height: 0.96;
+  --text-title: clamp(2.25rem, 5.6vw, 5rem);
+  --text-title--line-height: 0.98;
+  --text-heading: clamp(1.75rem, 3.6vw, 3.25rem);
+  --text-heading--line-height: 1.04;
+  --text-subhead: clamp(1.25rem, 1.9vw, 1.625rem);
+  --text-subhead--line-height: 1.2;
+  --text-lead: clamp(1.125rem, 1.4vw, 1.3125rem);
+  --text-lead--line-height: 1.5;
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-white);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-wrap: break-word;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-white);
+  }
+}
+
+@utility wide {
+  font-stretch: 118%;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
+@utility shell {
+  width: 100%;
+  max-width: 88rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+@utility band {
+  padding-block: clamp(4.5rem, 9vw, 9rem);
+}
+
+@utility link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  &:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
