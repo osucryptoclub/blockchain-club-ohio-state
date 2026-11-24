@@ -55,4 +55,31 @@ export const cohorts: Cohort[] = [
     ],
     activities: ["Team build sessions", "Code review on every pull request"],
   },
+  {
+    slug: "investments-fall-2026",
+    name: "Investments",
+    term: "Fall 2026",
+    status: "active",
+    summary:
+      "Members learn how digital-asset markets work and practice disciplined analysis: write the thesis down, show the evidence, and let others try to break it. Research and education, not financial advice.",
+    focus: ["Market structure", "Token research", "Risk", "Portfolio theory"],
+  },
+  {
+    slug: "marketing-fall-2026",
+    name: "Marketing",
+    term: "Fall 2026",
+    status: "active",
+    summary:
+      "Members tell the club’s story and grow its reach: social media, design, events, and the relationships with partners and sponsors.",
+    focus: ["Brand and design", "Social media", "Events", "Partnerships"],
+  },
+  {
+    slug: "research-fall-2026",
+    name: "Research",
+    term: "Fall 2026",
+    status: "active",
+    summary:
+      "Members read papers closely, analyze protocols, and write up what they find so others can check it.",
+    focus: ["Protocol analysis", "Paper reading", "On-chain data", "Writing"],
+  },
 ];

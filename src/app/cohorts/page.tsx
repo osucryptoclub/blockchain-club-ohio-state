@@ -60,9 +60,14 @@ export default function Cohorts() {
                     <span className="muted max-w-[52ch] lg:col-span-5">
                       {c.summary}
                       <span className="mt-3 block font-mono text-sm">
-                        {c.teams?.length ?? 0} {c.teams?.length === 1 ? "team" : "teams"} · {projects}{" "}
-                        {projects === 1 ? "project" : "projects"}
-                        {members > 0 && ` · ${members} members`}
+                        {[
+                          c.teams?.length && `${c.teams.length} ${c.teams.length === 1 ? "team" : "teams"}`,
+                          projects > 0 && `${projects} ${projects === 1 ? "project" : "projects"}`,
+                          members > 0 && `${members} members`,
+                          ...(c.teams?.length || projects > 0 ? [] : c.focus.slice(0, 3)),
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
                       </span>
                     </span>
                     <ArrowRight

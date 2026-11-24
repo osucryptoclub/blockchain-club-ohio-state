@@ -1,4 +1,6 @@
+import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import type { CSSProperties } from "react";
 import { Action, TextLink } from "@/components/action";
 import { AreaExplorer } from "@/components/area-explorer";
@@ -206,6 +208,31 @@ export default async function Home() {
               ))}
             </ul>
           </div>
+          {orderedCohorts.length > 1 && (
+            <div className="shell mt-16 lg:mt-20">
+              <h3 className="mb-5 font-semibold">All cohorts</h3>
+              <ul className="rule grid border-t border-l sm:grid-cols-2 lg:grid-cols-4">
+                {orderedCohorts.map((c) => (
+                  <li key={c.slug} className="rule border-r border-b">
+                    <Link
+                      href={`/cohorts/${c.slug}`}
+                      className="group flex h-full items-center justify-between gap-4 p-6 transition-colors hover:bg-white/5"
+                    >
+                      <span>
+                        <span className="wide block text-cell">{c.name}</span>
+                        <span className="muted mt-1 block text-sm">{c.focus.slice(0, 2).join(" · ")}</span>
+                      </span>
+                      <ArrowRight
+                        size={18}
+                        aria-hidden="true"
+                        className="shrink-0 transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
       )}
 

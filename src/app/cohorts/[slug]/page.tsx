@@ -32,8 +32,10 @@ export default async function CohortPage({ params }: PageProps<"/cohorts/[slug]"
   const projects = cohortProjects(cohort.slug);
   const stats = [
     { label: "Status", value: cohortStatuses[cohort.status] },
-    { label: "Teams", value: String(cohort.teams?.length ?? 0) },
-    { label: "Projects", value: String(projects.length) },
+    cohort.teams?.length
+      ? { label: "Teams", value: String(cohort.teams.length) }
+      : { label: "Focus areas", value: String(cohort.focus.length) },
+    { label: "Projects", value: projects.length > 0 ? String(projects.length) : "Coming soon" },
     { label: "Members", value: members.length > 0 ? String(members.length) : "Listing soon" },
   ];
 
