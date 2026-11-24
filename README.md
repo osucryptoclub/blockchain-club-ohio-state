@@ -97,7 +97,7 @@ Type is Archivo, with a wide cut for headings, and IBM Plex Mono for code and ha
 
 Always write the name as **Blockchain Club at Ohio State**.
 
-The mark is original artwork. The site uses no Ohio State logos, Block O, Brutus, or seal. University names and marks need approval from [Trademark and Licensing Services](https://trademarklicensing.osu.edu/page/student-request), and registered student organizations must carry the university's disclaimer. The `registration` setting in `src/content/site.ts` controls which disclaimer the footer shows. Leave it as `"unconfirmed"` until the club's registration under this name is active.
+The header and footer use the club's seal (`src/assets/club-logo.jpg`, taken from the club's GitHub organization). It carries the earlier name, The Cryptocurrency Club, along with "The Ohio State University" and a buckeye leaf, so confirm it is cleared before launch. The Oval mark used elsewhere is original artwork. The site uses no Block O, Brutus, or university seal. University names and marks need approval from [Trademark and Licensing Services](https://trademarklicensing.osu.edu/page/student-request), and registered student organizations must carry the university's disclaimer. The `registration` setting in `src/content/site.ts` controls which disclaimer the footer shows. Leave it as `"unconfirmed"` until the club's registration under this name is active.
 
 ## Contribute
 
