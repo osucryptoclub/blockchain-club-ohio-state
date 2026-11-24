@@ -251,6 +251,14 @@ html[data-intro]:not([data-intro="out"]) main * {
     animation: pop 500ms var(--ease-block) 350ms backwards;
   }
 
+  .menu-panel {
+    animation: drop 260ms var(--ease-block) both;
+  }
+
+  .tick {
+    animation: tick 420ms var(--ease-block);
+  }
+
   dialog[open] .menu-item {
     animation: enter 520ms var(--ease-block) backwards;
     animation-delay: calc(var(--i) * 40ms);
@@ -295,6 +303,18 @@ html[data-intro]:not([data-intro="out"]) main * {
   from {
     opacity: 0;
     transform: translateY(1.5rem);
+  }
+}
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+}
+@keyframes tick {
+  from {
+    opacity: 0.25;
+    transform: translateY(-0.2em);
   }
 }
 @keyframes hero-line {

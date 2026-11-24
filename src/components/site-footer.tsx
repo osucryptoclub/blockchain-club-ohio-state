@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChannelLink } from "@/components/channel-link";
 import { Seal } from "@/components/logo";
-import { disclaimer, navigation, site } from "@/content/site";
+import { disclaimer, navigation, secondaryNavigation, site } from "@/content/site";
 
 export function SiteFooter() {
   return (
@@ -15,7 +15,7 @@ export function SiteFooter() {
           <nav aria-label="Footer" className="lg:col-span-4">
             <h2 className="text-sm text-gray-400">Site</h2>
             <ul className="mt-3 grid grid-cols-2 gap-x-10">
-              {[...navigation, { href: "/join", label: "Join the Club" }].map(({ href, label }) => (
+              {[...navigation, ...secondaryNavigation, { href: "/join", label: "Join the Club" }].map(({ href, label }) => (
                 <li key={href}>
                   <Link href={href} className="inline-block py-1.5 hover:underline hover:underline-offset-4">
                     {label}

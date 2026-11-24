@@ -1,5 +1,11 @@
+import { Code, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { TextLink } from "@/components/action";
 import { projectKinds, projectStatuses, type Project } from "@/content/projects";
+import { getCohort } from "@/lib/roster";
+
+const isSource = (url: string) => url.startsWith("https://github.com/");
 
 /** The stages a project's data moves through, drawn as linked blocks. */
 function Flow({ stages }: { stages: string[] }) {
@@ -24,6 +30,19 @@ function Flow({ stages }: { stages: string[] }) {
   );
 }
 
+function CohortTag({ slug }: { slug: string }) {
+  const cohort = getCohort(slug);
+  if (!cohort) return null;
+  return (
+    <Link
+      href={`/cohorts/${slug}`}
+      className="inline-flex items-center gap-2 bg-scarlet px-2.5 py-1 text-white hover:bg-scarlet-dark"
+    >
+      {cohort.name} cohort · {cohort.term}
+    </Link>
+  );
+}
+
 export function ProjectList({ projects }: { projects: Project[] }) {
   return (
     <ul className="border-t-2 border-current">
@@ -35,17 +54,39 @@ export function ProjectList({ projects }: { projects: Project[] }) {
               <p className="mt-5 flex flex-wrap gap-2 text-sm font-medium">
                 <span className="border border-current px-2.5 py-1">{projectKinds[project.kind]}</span>
                 <span className="border border-current px-2.5 py-1">{projectStatuses[project.status]}</span>
+                {project.cohort && <CohortTag slug={project.cohort} />}
               </p>
+              {project.image && (
+                <Image
+                  src={project.image}
+                  alt={`Screenshot of ${project.title}`}
+                  width={1280}
+                  height={720}
+                  sizes="(min-width: 64rem) 36vw, 90vw"
+                  className="mt-8 aspect-video w-full border border-current/15 object-cover"
+                />
+              )}
             </div>
             <div className="lg:col-span-7">
               <p className="max-w-[58ch] text-lead">{project.summary}</p>
-              <p className="muted mt-4">Built with {project.stack.join(", ")}</p>
+              <ul aria-label="Technologies" className="mt-6 flex flex-wrap gap-2">
+                {project.stack.map((t) => (
+                  <li key={t} className="bg-current/[0.07] px-2.5 py-1 font-mono text-[0.8125rem]">
+                    {t}
+                  </li>
+                ))}
+              </ul>
               {project.contributors && <p className="muted mt-1">By {project.contributors.join(", ")}</p>}
-              <p className="mt-6 flex flex-wrap gap-6">
+              <p className="mt-6 flex flex-wrap items-center gap-6">
                 {project.links.map((l) => (
-                  <TextLink key={l.url} href={l.url}>
-                    {l.label}
-                  </TextLink>
+                  <span key={l.url} className="inline-flex items-center gap-2">
+                    {isSource(l.url) ? (
+                      <Code size={16} aria-hidden="true" />
+                    ) : (
+                      <ExternalLink size={16} aria-hidden="true" />
+                    )}
+                    <TextLink href={l.url}>{l.label}</TextLink>
+                  </span>
                 ))}
               </p>
             </div>

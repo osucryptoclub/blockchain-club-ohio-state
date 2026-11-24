@@ -14,7 +14,10 @@ You don't need to touch the layout to keep the site current. Everything officers
 | Events | `src/content/events.ts` |
 | Photos and the order of the introduction | `src/content/photos.ts` (files in `src/assets/photos/`) |
 | Projects, research, and hackathon work | `src/content/projects.ts` |
-| Leadership and teams | `src/content/team.ts` |
+| People: names, roles, cohorts, achievements, links | `src/content/people.ts` |
+| Leadership groups | `src/content/team.ts` |
+| Cohorts (each gets a page and a menu entry) | `src/content/cohorts.ts` |
+| Next application window and countdown | `src/content/applications.ts` |
 | Sponsors and partnership options | `src/content/sponsors.ts` |
 | The areas on What We Do | `src/content/areas.ts` (each has a diagram in `src/components/area-glyph.tsx`) |
 | Why people join and how they contribute | `src/content/community.ts` |
@@ -26,6 +29,9 @@ How the content behaves:
 - **Links set to `null`** show as "coming soon" text and cannot be clicked. Add the URL and the link appears everywhere.
 - **Events** sort themselves and move to "Past" within about an hour of ending. Dates need a UTC offset: `-05:00` in winter, `-04:00` in summer. A bad date fails the build and names the event.
 - **Projects** need at least one public link.
+- **People** are listed once. A `team` role puts them on the Team page; each `cohorts` entry puts them on that cohort's page. Delete the entry to remove them everywhere.
+- **Cohorts** need only an entry in `cohorts.ts`. Projects join a cohort with `cohort: "<slug>"`. A typo in a cohort, team, or id fails the build and names the entry.
+- **The countdown** stays on "Date to be announced" until `applications.opens` is set, counts down to it, shows the apply button while open, and says when it closed.
 - **Team groups** with no members show a placeholder.
 - **Photos and logos** go in `public/team/` and `public/sponsors/`.
 
