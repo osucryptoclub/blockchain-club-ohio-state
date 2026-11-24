@@ -3,11 +3,11 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 const variants = {
-  /** On white or dark grounds. */
-  primary: "bg-scarlet text-white hover:bg-scarlet-dark",
+  /** On black or white grounds. */
+  primary: "bg-scarlet text-white [--fill:var(--color-white)] hover:text-black focus-visible:text-black",
   /** On scarlet grounds. */
-  inverse: "bg-white text-scarlet hover:bg-ink hover:text-white",
-  outline: "border border-current hover:bg-current/10",
+  inverse: "bg-white text-black [--fill:var(--color-black)] hover:text-white focus-visible:text-white",
+  outline: "border border-current/40 [--fill:color-mix(in_srgb,currentColor_14%,transparent)]",
 };
 
 type Props = {
@@ -21,14 +21,14 @@ const isExternal = (href: string) => href.startsWith("http");
 export function Action({ href, children, variant = "primary" }: Props) {
   const external = isExternal(href);
   const Icon = external ? ArrowUpRight : ArrowRight;
-  const className = `group inline-flex min-h-13 items-center gap-3 px-6 py-3 font-semibold transition-colors ${variants[variant]}`;
+  const className = `block-fill group inline-flex min-h-14 items-center gap-4 px-7 py-3 font-semibold transition-colors ${variants[variant]}`;
   const body = (
     <>
       {children}
       <Icon
         size={18}
         aria-hidden="true"
-        className="shrink-0 transition-transform group-hover:translate-x-0.5"
+        className="shrink-0 transition-transform duration-300 group-hover:translate-x-1"
       />
     </>
   );
@@ -44,16 +44,17 @@ export function Action({ href, children, variant = "primary" }: Props) {
 }
 
 export function TextLink({ href, children }: Omit<Props, "variant">) {
-  const className = "link inline-flex items-center gap-1.5 font-semibold";
+  const className = "link group inline-flex items-center gap-1.5 font-semibold";
+  const icon = "transition-transform duration-300 group-hover:translate-x-0.5";
   return isExternal(href) ? (
     <a href={href} className={className} rel="noopener">
       {children}
-      <ArrowUpRight size={16} aria-hidden="true" />
+      <ArrowUpRight size={16} aria-hidden="true" className={icon} />
     </a>
   ) : (
     <Link href={href} className={className}>
       {children}
-      <ArrowRight size={16} aria-hidden="true" />
+      <ArrowRight size={16} aria-hidden="true" className={icon} />
     </Link>
   );
 }

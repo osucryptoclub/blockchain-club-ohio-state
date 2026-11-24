@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { test } from "node:test";
 import { buildChain, inspect, reseal } from "../src/lib/chain.ts";
 import { broadcast, oval } from "../src/lib/oval.ts";
+import { exits, ground, heights, projector } from "../src/lib/scene.ts";
 import { sha256 } from "../src/lib/sha256.ts";
 
 test("sha256 matches Node's implementation", () => {
@@ -39,4 +40,19 @@ test("a broadcast from any node reaches the whole network", () => {
     assert.ok(at.every(Number.isFinite));
     assert.ok(hops > 0);
   }
+});
+
+test("every node in the scene has a block and a way out", () => {
+  assert.equal(ground.length, oval.nodes.length);
+  assert.equal(exits.length, oval.nodes.length);
+  assert.ok(heights.every((h) => h > 0));
+  assert.ok(exits.every((e) => e.length > 0));
+});
+
+test("the camera draws near things lower and larger, and tall things higher", () => {
+  const at = projector({ yaw: 0, pitch: 0.5, scale: 100, cx: 0, cy: 0 });
+  const [far, near, raised] = [at(0, 0, -0.5), at(0, 0, 0.5), at(0, 0.2, 0)];
+  assert.ok(near.y > far.y);
+  assert.ok(near.k > far.k);
+  assert.ok(raised.y < at(0, 0, 0).y);
 });

@@ -65,21 +65,21 @@ export function ChainDemo({ start }: { start: Block[] }) {
                 {i > 0 && (
                   <m.span
                     aria-hidden="true"
-                    className="absolute -top-9 left-8 h-9 w-0.75 bg-white lg:top-16 lg:-left-12 lg:h-0.75 lg:w-12"
+                    className="absolute -top-9 left-8 h-9 w-0.75 bg-scarlet lg:top-16 lg:-left-12 lg:h-0.75 lg:w-12"
                     initial={false}
                     animate={{ rotate: linked ? 0 : 24, scale: linked ? 1 : 0.55 }}
                   />
                 )}
                 <div
-                  className={`flex h-full flex-col border-2 transition-colors ${ok ? "border-gray-600" : "border-scarlet"}`}
+                  className={`flex h-full flex-col border bg-white/4 backdrop-blur-md transition-colors duration-300 ${ok ? "border-white/20" : "border-scarlet"}`}
                 >
                   <div
-                    className={`flex min-h-16 items-center justify-between gap-4 px-5 py-3 transition-colors ${ok ? "bg-gray-800" : "bg-scarlet"}`}
+                    className={`flex min-h-16 items-center justify-between gap-4 border-b px-5 py-3 transition-colors duration-300 lg:px-6 ${ok ? "border-white/20" : "border-scarlet bg-scarlet"}`}
                   >
-                    <h3 className="shrink-0 font-bold">Block {block.index}</h3>
+                    <h3 className="wide shrink-0 text-subhead">Block {block.index}</h3>
                     <p className="text-right text-sm leading-snug">{messages[states[i]]}</p>
                   </div>
-                  <div className="flex flex-1 flex-col gap-5 p-5">
+                  <div className="flex flex-1 flex-col gap-7 p-5 lg:p-6">
                     <label className="block">
                       <span className="text-sm text-gray-400">Contents (edit this)</span>
                       <input
@@ -89,7 +89,7 @@ export function ChainDemo({ start }: { start: Block[] }) {
                         autoComplete="off"
                         spellCheck={false}
                         onChange={(e) => edit(i, e.target.value)}
-                        className="mt-1 w-full border-b-2 border-gray-600 bg-transparent py-2 text-lg font-semibold text-white focus:border-white focus:outline-none"
+                        className="mt-1 w-full border-b border-white/40 bg-transparent py-2 text-lg font-semibold text-white focus:border-white focus:outline-none"
                       />
                     </label>
                     <dl className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-3 gap-y-2 text-sm">
@@ -116,7 +116,7 @@ export function ChainDemo({ start }: { start: Block[] }) {
             <button
               type="button"
               onClick={repair}
-              className="min-h-13 cursor-pointer bg-white px-6 font-semibold text-ink transition-colors hover:bg-gray-200"
+              className="min-h-13 cursor-pointer bg-white px-6 font-semibold text-black transition-colors hover:bg-white/85"
             >
               Re-seal block {firstBroken + 1}
             </button>

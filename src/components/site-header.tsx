@@ -3,7 +3,7 @@
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef } from "react";
+import { useRef, type CSSProperties } from "react";
 import { Wordmark } from "@/components/logo";
 import { navigation } from "@/content/site";
 
@@ -13,27 +13,31 @@ export function SiteHeader() {
   const close = () => menu.current?.close();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/25 bg-scarlet text-white">
+    <header className="site-header sticky top-0 z-40 border-b border-white/15 bg-black/85 text-white backdrop-blur-xl backdrop-saturate-150">
       <div className="shell flex h-18 items-center justify-between gap-6">
         <Link href="/">
           <Wordmark />
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-7 xl:flex">
+        <nav aria-label="Main" className="hidden items-center gap-8 xl:flex">
           {navigation.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
               aria-current={pathname === href ? "page" : undefined}
-              className="border-b-2 border-transparent py-1 text-[0.9375rem] font-medium hover:border-white aria-[current=page]:border-white"
+              className="group relative py-2 text-[0.9375rem] font-medium text-white/80 transition-colors hover:text-white aria-[current=page]:text-white"
             >
               {label}
+              <span
+                aria-hidden="true"
+                className="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 bg-scarlet transition-transform duration-300 ease-block group-hover:scale-x-100 group-aria-[current=page]:scale-x-100"
+              />
             </Link>
           ))}
           <Link
             href="/join"
             aria-current={pathname === "/join" ? "page" : undefined}
-            className="bg-white px-5 py-2.5 text-[0.9375rem] font-semibold text-scarlet transition-colors hover:bg-ink hover:text-white"
+            className="block-fill bg-scarlet px-6 py-3 text-[0.9375rem] font-semibold transition-colors [--fill:var(--color-white)] hover:text-black focus-visible:text-black"
           >
             Join the Club
           </Link>
@@ -49,6 +53,7 @@ export function SiteHeader() {
           <Menu aria-hidden="true" />
         </button>
       </div>
+      <span aria-hidden="true" className="progress absolute inset-x-0 -bottom-px h-0.5 bg-scarlet" />
 
       <dialog
         ref={menu}
@@ -69,13 +74,14 @@ export function SiteHeader() {
           </button>
         </div>
         <nav aria-label="Mobile" className="shell flex flex-col py-4">
-          {navigation.map(({ href, label }) => (
+          {navigation.map(({ href, label }, i) => (
             <Link
               key={href}
               href={href}
               onClick={close}
               aria-current={pathname === href ? "page" : undefined}
-              className="wide border-b border-white/25 py-3.5 text-2xl aria-[current=page]:underline aria-[current=page]:underline-offset-8"
+              style={{ "--i": i } as CSSProperties}
+              className="menu-item wide border-b border-white/25 py-3.5 text-[1.75rem] leading-tight aria-[current=page]:underline aria-[current=page]:underline-offset-8"
             >
               {label}
             </Link>
@@ -83,7 +89,8 @@ export function SiteHeader() {
           <Link
             href="/join"
             onClick={close}
-            className="mt-6 bg-white px-6 py-4 text-center text-lg font-semibold text-scarlet"
+            style={{ "--i": navigation.length } as CSSProperties}
+            className="menu-item mt-6 bg-white px-6 py-4 text-center text-lg font-semibold text-black"
           >
             Join the Club
           </Link>

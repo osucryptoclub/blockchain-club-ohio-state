@@ -15,7 +15,8 @@ You don't need to touch the layout to keep the site current. Everything officers
 | Projects, research, and hackathon work | `src/content/projects.ts` |
 | Leadership and teams | `src/content/team.ts` |
 | Sponsors and partnership options | `src/content/sponsors.ts` |
-| The nine areas on What We Do | `src/content/areas.ts` |
+| The areas on What We Do | `src/content/areas.ts` (each has a diagram in `src/components/area-glyph.tsx`) |
+| Why people join and how they contribute | `src/content/community.ts` |
 
 Small edits can be made on GitHub with the pencil icon. Open a pull request, wait for the check to pass, and merge.
 
@@ -75,18 +76,22 @@ tests/          Tests for src/lib
 
 Two parts are worth knowing before you change them:
 
-- **The Oval network** (`src/lib/oval.ts`, `src/components/oval-network.tsx`) is the club's signature graphic. Its shape is inspired by the crossing paths of the Oval. Clicking a node runs a shortest-path broadcast to every other node. It measures the headline and places itself clear of the text.
+- **The Oval network** (`src/lib/oval.ts`, `src/lib/scene.ts`, `src/components/oval-scene.tsx`) is the club's signature graphic: the crossing paths of the Oval as a lit 3D scene with a block at every crossing. Its shape is inspired by the Oval and is not a map of it. Clicking a block runs a shortest-path broadcast to every other block. It measures the hero copy and places itself clear of it.
 - **The chain demo** (`src/lib/chain.ts`, `src/components/chain-demo.tsx`) hashes three blocks with SHA-256 in the browser.
 
 ## Brand
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `scarlet` | `#BB0000` | Hero, page openers, primary buttons |
-| `scarlet-dark` | `#8B0000` | Hover states, secondary panels |
-| `ink` | `#1A1A1A` | Text, dark sections |
-| `white` | `#FFFFFF` | Page background, text on scarlet |
-| `gray-100` to `gray-800` | see `globals.css` | Secondary text, rules, quiet sections |
+| `black` | `#000000` | Page background |
+| `scarlet` | `#BB0000` | Primary buttons, block markers, light, feature sections |
+| `scarlet-dark` | `#8B0000` | Glows |
+| `white` | `#FFFFFF` | Text, the Projects section |
+| `coal`, `panel`, `gray-400` | see `globals.css` | Raised surfaces and secondary text |
+
+Scarlet on black is only strong enough for large shapes. Keep small text white or gray.
+
+Motion lives in `globals.css` and uses CSS scroll-driven animations, so it costs no JavaScript. It is off for visitors who ask for reduced motion, and nothing is hidden when it is off or unsupported.
 
 Type is Archivo, with a wide cut for headings, and IBM Plex Mono for code and hashes. Both are self-hosted at build time.
 

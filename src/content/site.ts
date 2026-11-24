@@ -30,9 +30,9 @@ type Site = {
 
 export const site: Site = {
   name: "Blockchain Club at Ohio State",
-  tagline: "Building the Future of Blockchain at Ohio State.",
+  tagline: "Building the Future of Decentralized Technology.",
   description:
-    "Bringing together students, developers, researchers, and innovators to explore decentralized technology and build what comes next.",
+    "Bringing together builders, researchers, entrepreneurs, and innovators at Ohio State to explore blockchain, Web3, cryptography, and decentralized systems.",
   email: null,
   registration: "unconfirmed",
   channels: [

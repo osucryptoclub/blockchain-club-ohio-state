@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Action } from "@/components/action";
-import { PageHero, Split } from "@/components/page-hero";
+import { PageHero } from "@/components/page-hero";
 import { ProjectList } from "@/components/project-list";
-import { projects } from "@/content/projects";
+import { Band, Cells, Rows, Split } from "@/components/section";
+import { projectKindList, projects } from "@/content/projects";
 import { channel, site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -23,21 +24,13 @@ export default function Projects() {
     <>
       <PageHero
         title="Work you can check."
-        action={
-          github.url && (
-            <Action href={github.url} variant="inverse">
-              Browse our GitHub
-            </Action>
-          )
-        }
+        action={github.url && <Action href={github.url}>Browse our GitHub</Action>}
       >
         Student software, research, and hackathon projects. Everything listed here is public, so you can read
         it, run it, and improve it.
       </PageHero>
 
-      <section className="band">
-        <div className="shell">
-          <h2 className="wide mb-10 text-heading">Projects</h2>
+      <Band title="Projects" tone="paper">
           {projects.length > 0 ? (
             <ProjectList projects={projects} />
           ) : (
@@ -45,20 +38,14 @@ export default function Projects() {
               No projects are listed yet. The first ones will appear here as they are published.
             </p>
           )}
-        </div>
-      </section>
+        </Band>
 
-      <Split title="Get your project listed" className="bg-gray-100">
-        <ol className="border-t border-ink">
-          {steps.map(({ title, text }, i) => (
-            <li key={title} className="grid gap-x-8 gap-y-1 border-b border-gray-200 py-6 sm:grid-cols-[14rem_minmax(0,1fr)]">
-              <h3 className="font-bold">
-                {i + 1}. {title}
-              </h3>
-              <p className="text-gray-600">{text}</p>
-            </li>
-          ))}
-        </ol>
+      <Band title="What gets listed">
+        <Cells items={projectKindList} />
+      </Band>
+
+      <Split title="Get your project listed">
+        <Rows items={steps} ordered />
       </Split>
     </>
   );
