@@ -58,7 +58,7 @@ export const site: Site = {
       id: "linkedin",
       label: "LinkedIn",
       purpose: "Professional updates for members and partners",
-      url: null,
+      url: "https://www.linkedin.com/company/blockchain-club-at-ohio-state/",
     },
     {
       id: "instagram",

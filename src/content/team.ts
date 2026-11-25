@@ -24,8 +24,8 @@ export type Leader = {
 
 export const leaders: Leader[] = [
   {
-    // Spelling, role, and club match Ohio State's student organization
-    // directory; college and link match the public LinkedIn listing. November 2026.
+    // Spelling, role, and club match Ohio State's student organization directory.
+    // The club confirmed every officer's college and LinkedIn link. November 2026.
     name: "Jack Korinek",
     role: "President",
     bio: "Sets the club’s direction and speaks for it on campus and beyond.",
@@ -37,6 +37,7 @@ export const leaders: Leader[] = [
     name: "Cooper Shalin",
     role: "Vice President",
     bio: "Helps run the club and keeps its four cohorts moving.",
+    education: "Fisher College of Business, Ohio State",
     linkedin: "https://www.linkedin.com/in/cooper-shalin-294a26325/",
     photo: "/team/cooper-shalin.webp",
   },
@@ -44,6 +45,7 @@ export const leaders: Leader[] = [
     name: "Emilio Laracuente",
     role: "Vice President",
     bio: "Helps run the club and keeps its four cohorts moving.",
+    education: "Fisher College of Business, Ohio State",
     linkedin: "https://www.linkedin.com/in/emiliolaracuente/",
     photo: "/team/emilio-laracuente.webp",
   },
