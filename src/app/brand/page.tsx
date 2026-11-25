@@ -138,11 +138,11 @@ export default function Brand() {
           university, and the site’s hero already teaches people to read it. Use the lockup by default, and the mark
           alone where space is square.
         </p>
-        <ul className="grid gap-px bg-black/15 md:grid-cols-3">
+        <ul className="grid grid-cols-[minmax(0,1fr)] gap-px bg-black/15 lg:grid-cols-3">
           {tones.map((t) => (
             <li key={t.label} className={`flex aspect-[16/10] flex-col justify-between p-6 ${t.className}`}>
-              <span className="font-mono text-xs tracking-wider uppercase opacity-70">{t.label}</span>
-              <Lockup className="text-[clamp(1.25rem,2.2vw,1.75rem)]" accent={t.accent} />
+              <span className="font-mono text-xs tracking-wider uppercase opacity-90">{t.label}</span>
+              <Lockup className="text-[clamp(1rem,2vw,1.625rem)]" accent={t.accent} />
             </li>
           ))}
         </ul>

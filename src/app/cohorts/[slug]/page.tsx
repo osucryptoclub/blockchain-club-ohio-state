@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Action, TextLink } from "@/components/action";
+import { CohortGlyph } from "@/components/cohort-glyph";
+import { CohortBadge } from "@/components/cohort-logo";
+import { Lab } from "@/components/labs/lab";
 import { Mark } from "@/components/logo";
+import { MonumentViewer } from "@/components/world/monument-viewer";
 import { PageHero } from "@/components/page-hero";
 import { PeopleGrid, PersonCard } from "@/components/person-card";
 import { ProjectList } from "@/components/project-list";
 import { Band, Cells, Closing, Split } from "@/components/section";
 import { cohorts, cohortStatuses } from "@/content/cohorts";
+import { getLab } from "@/content/labs";
 import { site } from "@/content/site";
+import { trackNamed } from "@/content/tracks";
 import { cohortMembers, cohortProjects, cohortRole, getCohort } from "@/lib/roster";
 
 export function generateStaticParams() {
@@ -28,6 +34,8 @@ export default async function CohortPage({ params }: PageProps<"/cohorts/[slug]"
   const cohort = getCohort((await params).slug);
   if (!cohort) notFound();
 
+  const track = trackNamed(cohort.name);
+  const lab = track && getLab(track.slug);
   const members = cohortMembers(cohort.slug);
   const projects = cohortProjects(cohort.slug);
   const stats = [
@@ -53,6 +61,18 @@ export default async function CohortPage({ params }: PageProps<"/cohorts/[slug]"
       >
         {cohort.summary}
       </PageHero>
+
+      {track && (
+        <section aria-label="Logo" className="rule relative border-t bg-black">
+          <MonumentViewer slug={track.slug} className="h-[min(70svh,42rem)] w-full">
+            <CohortGlyph slug={track.slug} className="h-4/5" />
+          </MonumentViewer>
+          <div className="shell pointer-events-none absolute inset-x-0 bottom-8 flex max-w-none items-center gap-5">
+            <CohortBadge slug={track.slug} className="size-20" />
+            <p className="max-w-[34ch] text-lead font-semibold">{track.focus}</p>
+          </div>
+        </section>
+      )}
 
       <section className="pt-16 lg:pt-24">
         <dl className="shell">
@@ -137,6 +157,18 @@ export default async function CohortPage({ params }: PageProps<"/cohorts/[slug]"
             ))}
           </ul>
         </Split>
+      )}
+
+      {lab && (
+        <section id="lab" aria-labelledby="lab-title" className="band rule border-t">
+          <div className="shell">
+            <h2 id="lab-title" className="rise metal wide mb-4 text-heading">
+              {lab.title}
+            </h2>
+            <p className="muted mb-10 max-w-[56ch] text-lead">{lab.hook}</p>
+            <Lab slug={lab.slug} />
+          </div>
+        </section>
       )}
 
       <Closing title="Want in on the next cohort?" href="/join#apply" label="See when applications open" />

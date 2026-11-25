@@ -31,6 +31,9 @@ export default function Join() {
         action={
           <>
             <Action href="#apply">Apply to a cohort</Action>
+            <Action href="/find-your-cohort" variant="outline">
+              Find your cohort
+            </Action>
             {discord.url ? (
               <Action href={discord.url} variant="outline">
                 Join our Discord

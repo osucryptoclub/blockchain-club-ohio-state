@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import type { CSSProperties } from "react";
 import { Action, TextLink } from "@/components/action";
 import { AreaExplorer } from "@/components/area-explorer";
@@ -8,18 +9,21 @@ import { CohortCards } from "@/components/cohort-cards";
 import { EventKinds, EventList } from "@/components/event-list";
 import { LeaderCards } from "@/components/leader-cards";
 import { LiquidMetal } from "@/components/liquid-metal";
-import { OvalScene } from "@/components/oval-scene";
 import { PhotoFlight } from "@/components/photo-flight";
+import { CohortBadge } from "@/components/cohort-logo";
+import { OvalWorld } from "@/components/world/oval-world";
 import { ProjectList } from "@/components/project-list";
 import { ScrollWords } from "@/components/scroll-words";
 import { Rows } from "@/components/section";
 import { SponsorGrid } from "@/components/sponsor-grid";
 import { collaborate } from "@/content/community";
+import { labs } from "@/content/labs";
 import { projectKindList, projects } from "@/content/projects";
 import { applications } from "@/content/applications";
 import { cohortStatuses } from "@/content/cohorts";
 import { site } from "@/content/site";
 import { sponsors } from "@/content/sponsors";
+import { trackNumber, tracks } from "@/content/tracks";
 import { buildChain } from "@/lib/chain";
 import { getEvents } from "@/lib/events";
 import { cohortProjects, orderedCohorts } from "@/lib/roster";
@@ -40,36 +44,65 @@ export default async function Home() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-black text-white">
-        <div className="shell pointer-events-none relative z-10 flex flex-col pt-10 lg:min-h-[min(60rem,calc(100svh-4.5rem))] lg:pt-10 lg:pb-24">
-          <p className="enter flex items-center gap-3 font-semibold tracking-tight lg:text-subhead">
-            <span aria-hidden="true" className="size-3 shrink-0 bg-scarlet" />
-            {site.name}
-          </p>
-          <h1 className="wide mt-6 text-hero md:text-hero-wide lg:mt-8">
-            {headline.map((line, i) => (
-              <span key={line} className="hero-line metal block md:whitespace-nowrap" style={delay(80 + i * 110)}>
-                {line}
-              </span>
-            ))}
-          </h1>
-          <div
-            data-hero-copy
-            className="pointer-events-auto mt-8 max-w-[34rem] lg:mt-auto lg:w-fit lg:max-w-[29rem] lg:pt-8"
-          >
-            <p className="enter text-lead" style={delay(480)}>
-              {site.description}
+      <OvalWorld
+        hero={
+          <>
+            <p className="enter flex items-center gap-3 font-semibold tracking-tight lg:text-subhead">
+              <span aria-hidden="true" className="size-3 shrink-0 bg-scarlet" />
+              {site.name}
             </p>
-            <div className="enter mt-8 flex flex-wrap gap-3" style={delay(600)}>
-              <Action href="/join">Join the Club</Action>
-              <Action href="#what-we-do" variant="outline">
-                Explore What We Do
+            <h1 className="wide mt-6 text-hero md:text-hero-wide lg:mt-8">
+              {headline.map((line, i) => (
+                <span key={line} className="hero-line metal block md:whitespace-nowrap" style={delay(80 + i * 110)}>
+                  {line}
+                </span>
+              ))}
+            </h1>
+            <div className="mt-8 max-w-[34rem] lg:mt-auto lg:max-w-[29rem]">
+              <p className="enter text-lead" style={delay(480)}>
+                {site.description}
+              </p>
+              <div className="enter mt-8 flex flex-wrap gap-3" style={delay(600)}>
+                <Action href="/join">Join the Club</Action>
+                <Action href="#what-we-do" variant="outline">
+                  Explore What We Do
+                </Action>
+              </div>
+            </div>
+          </>
+        }
+        chapters={tracks.map(({ slug, name, focus, keywords }, i) => (
+          <div key={slug}>
+            <p className="flex items-center gap-4 font-semibold">
+              <CohortBadge slug={slug} className="size-14 lg:size-16" />
+              Cohort {trackNumber(i)}
+            </p>
+            <h2 className="metal wide mt-5 text-[clamp(2.5rem,7vw,6.5rem)] leading-[0.95]">{name}</h2>
+            <p className="mt-5 max-w-[26ch] text-lead font-semibold">{focus}</p>
+            <p className="mt-4 hidden flex-wrap gap-2 text-sm font-medium sm:flex">
+              {keywords.map((k) => (
+                <span key={k} className="border border-white/30 bg-black/40 px-3 py-1 backdrop-blur-sm">
+                  {k}
+                </span>
+              ))}
+            </p>
+            <div className="mt-7">
+              <Action href={`/cohorts#${slug}`}>Enter {name}</Action>
+            </div>
+          </div>
+        ))}
+        finale={
+          <div className="mx-auto max-w-[60rem] text-center">
+            <p className="metal wide text-[clamp(2.25rem,6vw,5.5rem)] leading-[0.98]">Four paths. <span className="block">One network.</span></p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Action href="/find-your-cohort">Find your cohort</Action>
+              <Action href="/join" variant="outline">
+                Join the Club
               </Action>
             </div>
           </div>
-        </div>
-        <OvalScene />
-      </section>
+        }
+      />
 
       <section id="about" aria-labelledby="about-title" className="band">
         <div className="shell">
@@ -92,14 +125,16 @@ export default async function Home() {
 
       <section id="cohorts" className="band rule border-t">
         <div className="shell">
-          <div className="mb-12 flex flex-wrap items-end justify-between gap-8 lg:mb-16">
+          <div className="journey-cards mb-12 flex flex-wrap items-end justify-between gap-8 lg:mb-16">
             <h2 className="rise metal wide max-w-[16ch] text-heading">Four cohorts. Pick where you start.</h2>
             <TextLink href="/cohorts">All about the cohorts</TextLink>
           </div>
-          <CohortCards />
+          <div className="journey-cards mb-20 lg:mb-28">
+            <CohortCards />
+          </div>
         </div>
         {cohort && (
-          <div className="shell mt-20 grid gap-12 lg:mt-28 lg:grid-cols-12">
+          <div className="shell grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-5">
               <p className="flex items-center gap-3 font-semibold">
                 <span aria-hidden="true" className="size-2.5 animate-pulse bg-scarlet" />
@@ -186,6 +221,31 @@ export default async function Home() {
             </p>
           </div>
           <ChainDemo start={chain} />
+        </div>
+      </section>
+
+      <section id="labs" className="band rule border-t">
+        <div className="shell">
+          <div className="mb-12 flex flex-wrap items-end justify-between gap-8 lg:mb-16">
+            <h2 className="rise metal wide max-w-[14ch] text-heading">Don’t read about it. Break it.</h2>
+            <TextLink href="/labs">All labs</TextLink>
+          </div>
+          <ul className="rule grid border-t border-l sm:grid-cols-2 xl:grid-cols-4">
+            {labs.map((lab) => (
+              <li key={lab.slug} className="rule border-r border-b">
+                <Link
+                  href={`/labs/${lab.slug}`}
+                  className="block-fill group flex h-full min-h-72 flex-col justify-between gap-10 p-6 lg:p-8"
+                >
+                  <CohortBadge slug={lab.slug} className="size-16" />
+                  <span>
+                    <span className="wide block text-cell">{lab.title}</span>
+                    <span className="mt-3 block text-sm opacity-80">About {lab.minutes} minutes</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

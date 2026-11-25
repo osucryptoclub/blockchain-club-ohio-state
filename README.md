@@ -85,6 +85,10 @@ tests/          Tests for src/lib
 Two parts are worth knowing before you change them:
 
 - **The Oval network** (`src/lib/oval.ts`, `src/lib/scene.ts`, `src/components/oval-scene.tsx`) is the club's signature graphic: the crossing paths of the Oval as a lit 3D scene with a block at every crossing. Its shape is inspired by the Oval and is not a map of it. Clicking a block runs a shortest-path broadcast to every other block. It measures the hero copy and places itself clear of it.
+- **The journey** (`src/lib/world.ts`, `src/components/world/`) opens the home page: one WebGL scene whose camera follows the scroll past a monument for each track. `KEYS` in `world.ts` is the camera path. Without WebGL 2, or under reduced motion, it is one still screen and the tracks are listed as cards.
+- **Labs** (`src/lib/labs.ts`, `src/components/labs/`, text in `src/content/labs.ts`) are four interactive experiments. All of their logic is tested.
+- **The cohort finder** (`src/content/quiz.ts`, `src/lib/quiz.ts`) is six questions and a share card.
+- **Social previews** are drawn by `src/lib/social.tsx` from each page's `opengraph-image.tsx`.
 - **Cohort logos** (`src/lib/cohort-marks.ts`) are one family cut from the isometric block. SVG and PNG files for print and social are in `public/brand/cohorts/`, for dark and light grounds.
 - **Photo flight** (`src/components/photo-flight.tsx`) moves a camera through club photos as the page scrolls, using CSS only. It is set in columns under reduced motion and in browsers without scroll-driven animation.
 - **Liquid metal** (`src/components/liquid-metal.tsx`) is one small shader used behind closing sections and inside the footer wordmark.

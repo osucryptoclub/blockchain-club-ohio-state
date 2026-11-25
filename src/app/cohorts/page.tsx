@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { Action } from "@/components/action";
 import { cohortGrounds } from "@/components/cohort-cards";
+import { Action, TextLink } from "@/components/action";
 import { CohortGlyph } from "@/components/cohort-glyph";
+import { MonumentViewer } from "@/components/world/monument-viewer";
+import { getLab } from "@/content/labs";
 import { CohortBadge, CohortLogo } from "@/components/cohort-logo";
 import { PageHero } from "@/components/page-hero";
 import { Closing, Rows, Split } from "@/components/section";
@@ -72,7 +74,10 @@ export default function Cohorts() {
                   {cohort.name}
                 </h2>
                 <p className="mt-5 max-w-[34ch] text-lead font-semibold">{cohort.focus}</p>
-                <CohortGlyph slug={cohort.slug} className="mt-10 w-full max-w-96" />
+                <MonumentViewer slug={cohort.slug} className="mt-10 aspect-square w-full max-w-120 border border-white/15 bg-black">
+                  <CohortGlyph slug={cohort.slug} className="w-4/5" />
+                </MonumentViewer>
+                <p className="mt-3 text-sm text-white/75">Drag to turn it.</p>
               </div>
               <div className="lg:col-span-7">
                 <p className="max-w-[58ch] text-lead">{cohort.description}</p>
@@ -85,6 +90,11 @@ export default function Cohorts() {
                     </li>
                   ))}
                 </ul>
+                <div className="mt-12 border border-white/30 bg-black/35 p-6 lg:p-8">
+                  <h3 className="wide text-cell">{getLab(cohort.slug)?.title}</h3>
+                  <p className="mt-3 mb-5 max-w-[52ch] text-white/85">{getLab(cohort.slug)?.hook}</p>
+                  <TextLink href={`/labs/${cohort.slug}`}>Try the lab</TextLink>
+                </div>
                 {sessions.length > 0 && (
                   <p className="mt-12 flex flex-wrap gap-3">
                     {sessions.map((c) => (
