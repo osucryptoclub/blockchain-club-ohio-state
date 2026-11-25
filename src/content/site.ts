@@ -64,7 +64,7 @@ export const site: Site = {
       id: "instagram",
       label: "Instagram",
       purpose: "Photos and event announcements",
-      url: null,
+      url: "https://www.instagram.com/blockchainclub_ohiostate/",
     },
     { id: "x", label: "X", purpose: "News and public posts", url: null },
   ],
@@ -76,16 +76,25 @@ export function channel(id: Channel["id"]): Channel {
   return found;
 }
 
-export const navigation = [
+/**
+ * The main menu. The entry with `menu: "cohorts"` opens a dropdown listing
+ * every cohort in src/content/cohorts.ts, so new cohorts appear on their own.
+ */
+export const navigation: { href: string; label: string; menu?: "cohorts" }[] = [
   { href: "/about", label: "About" },
-  { href: "/cohorts", label: "Cohorts" },
   { href: "/what-we-do", label: "What We Do" },
-  { href: "/events", label: "Events" },
+  { href: "/cohorts", label: "Cohorts", menu: "cohorts" },
   { href: "/projects", label: "Projects" },
+  { href: "/events", label: "Events" },
   { href: "/team", label: "Team" },
   { href: "/sponsors", label: "Sponsors" },
+];
+
+/** Pages linked from the footer but not the main menu. */
+export const secondaryNavigation = [
   { href: "/contact", label: "Contact" },
-] as const;
+  { href: "/brand", label: "Brand" },
+];
 
 export const disclaimer = {
   registered: `We, ${site.name}, are a registered student organization at The Ohio State University. Registration shall not be construed as Ohio State's approval, endorsement, or sponsorship of our registered student organization's publications, activities, purposes, actions or positions.`,

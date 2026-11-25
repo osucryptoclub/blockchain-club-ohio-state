@@ -4,8 +4,10 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, type CSSProperties } from "react";
+import { CohortsMenu } from "@/components/cohorts-menu";
 import { LogoLink, Wordmark } from "@/components/logo";
 import { navigation } from "@/content/site";
+import { orderedCohorts } from "@/lib/roster";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -20,7 +22,10 @@ export function SiteHeader() {
         </LogoLink>
 
         <nav aria-label="Main" className="hidden items-center gap-8 xl:flex">
-          {navigation.map(({ href, label }) => (
+          {navigation.map(({ href, label, menu }) =>
+            menu === "cohorts" ? (
+              <CohortsMenu key={href} label={label} />
+            ) : (
             <Link
               key={href}
               href={href}
@@ -33,7 +38,8 @@ export function SiteHeader() {
                 className="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 bg-scarlet transition-transform duration-300 ease-block group-hover:scale-x-100 group-aria-[current=page]:scale-x-100"
               />
             </Link>
-          ))}
+            ),
+          )}
           <Link
             href="/join"
             aria-current={pathname === "/join" ? "page" : undefined}
@@ -74,17 +80,34 @@ export function SiteHeader() {
           </button>
         </div>
         <nav aria-label="Mobile" className="shell flex flex-col py-4">
-          {navigation.map(({ href, label }, i) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={close}
-              aria-current={pathname === href ? "page" : undefined}
-              style={{ "--i": i } as CSSProperties}
-              className="menu-item wide border-b border-white/25 py-3.5 text-[1.75rem] leading-tight aria-[current=page]:underline aria-[current=page]:underline-offset-8"
-            >
-              {label}
-            </Link>
+          {navigation.map(({ href, label, menu }, i) => (
+            <div key={href} className="menu-item border-b border-white/25" style={{ "--i": i } as CSSProperties}>
+              <Link
+                href={href}
+                onClick={close}
+                aria-current={pathname === href ? "page" : undefined}
+                className="wide block py-3.5 text-[1.75rem] leading-tight aria-[current=page]:underline aria-[current=page]:underline-offset-8"
+              >
+                {label}
+              </Link>
+              {menu === "cohorts" && (
+                <ul className="-mt-1 pb-3.5">
+                  {orderedCohorts.map((c) => (
+                    <li key={c.slug}>
+                      <Link
+                        href={`/cohorts/${c.slug}`}
+                        onClick={close}
+                        aria-current={pathname === `/cohorts/${c.slug}` ? "page" : undefined}
+                        className="flex items-center gap-3 py-1.5 pl-1 text-lg aria-[current=page]:underline aria-[current=page]:underline-offset-4"
+                      >
+                        <span aria-hidden="true" className="size-2 bg-white" />
+                        {c.name}, {c.term}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           ))}
           <Link
             href="/join"

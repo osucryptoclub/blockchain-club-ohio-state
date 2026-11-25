@@ -12,7 +12,12 @@
  *     summary: "What it does, in one or two sentences.",
  *     stack: ["Solidity", "Next.js"],
  *     flow: ["Input", "Contract", "App"],   // optional, drawn as a chain
- *     links: [{ label: "Source", url: "https://github.com/..." }],
+ *     links: [                              // "Source" and "Live demo" get icons
+ *       { label: "Source", url: "https://github.com/..." },
+ *       { label: "Live demo", url: "https://..." },
+ *     ],
+ *     cohort: "builders-fall-2026",         // optional, a slug from cohorts.ts
+ *     image: "/projects/name.webp",         // optional, 16:9, in public/projects/
  *     contributors: ["Name", "Name"],       // optional, with their permission
  *   },
  */
@@ -53,6 +58,10 @@ export type Project = {
   /** Optional. The stages work passes through, drawn as a chain of blocks. */
   flow?: string[];
   links: [Link, ...Link[]];
+  /** Optional. The slug of the cohort that built it. */
+  cohort?: string;
+  /** Optional. A 16:9 screenshot in public/projects/. */
+  image?: string;
   contributors?: string[];
 };
 
@@ -68,5 +77,6 @@ export const projects: Project[] = [
     stack: ["Python", "Supabase", "Next.js", "GitHub Actions"],
     flow: ["Approved feeds", "Collectors", "Tagged database", "Reader"],
     links: [{ label: "View source", url: "https://github.com/osucryptoclub/research-pipeline" }],
+    cohort: "builders-fall-2026",
   },
 ];

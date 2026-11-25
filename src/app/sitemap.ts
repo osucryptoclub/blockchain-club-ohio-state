@@ -1,7 +1,15 @@
 import type { MetadataRoute } from "next";
-import { navigation } from "@/content/site";
+import { cohorts } from "@/content/cohorts";
+import { navigation, secondaryNavigation } from "@/content/site";
 import { siteUrl } from "@/lib/url";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return ["", ...navigation.map((n) => n.href), "/join"].map((path) => ({ url: `${siteUrl}${path}` }));
+  const paths = [
+    "",
+    ...navigation.map((n) => n.href),
+    ...secondaryNavigation.map((n) => n.href),
+    "/join",
+    ...cohorts.map((c) => `/cohorts/${c.slug}`),
+  ];
+  return paths.map((path) => ({ url: `${siteUrl}${path}` }));
 }

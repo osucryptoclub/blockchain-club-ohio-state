@@ -1,91 +1,85 @@
 /**
- * The four cohorts that members join. Order sets the cohort number. Each slug
- * also picks a diagram in src/components/cohort-glyph.tsx.
+ * Cohorts. Each entry gets its own page at /cohorts/<slug> and a place in the
+ * Cohorts menu, newest first. Members join a cohort from src/content/people.ts,
+ * and projects from src/content/projects.ts (set `cohort` to this slug), so a
+ * new cohort needs nothing but an entry here.
+ *
+ * Example (copy into the array below and replace every value):
+ *
+ *   {
+ *     slug: "builders-spring-2027",
+ *     name: "Builders",
+ *     term: "Spring 2027",
+ *     status: "upcoming",                  // "upcoming" | "active" | "complete"
+ *     summary: "One or two sentences on what this cohort is for.",
+ *     focus: ["Smart contracts", "Data"],
+ *     teams: [{ name: "Team name", focus: "What this team owns." }],
+ *     activities: ["Weekly build session"],
+ *     achievements: ["Only results that can be checked"],
+ *   },
  */
 
+export const cohortStatuses = {
+  upcoming: "Upcoming",
+  active: "In session",
+  complete: "Complete",
+} as const;
+
 export type Cohort = {
-  slug: "builders" | "investments" | "research" | "marketing";
+  slug: string;
   name: string;
-  focus: string;
-  description: string;
-  /** Short labels for the card. */
-  keywords: string[];
-  activities: string[];
-  /** Slugs from src/content/areas.ts that this cohort works on. */
-  areas: string[];
+  term: string;
+  status: keyof typeof cohortStatuses;
+  summary: string;
+  focus: string[];
+  teams?: { name: string; focus: string }[];
+  activities?: string[];
+  achievements?: string[];
 };
 
 export const cohorts: Cohort[] = [
   {
-    slug: "builders",
+    // Confirm the term with leadership before announcing it widely.
+    slug: "builders-fall-2026",
     name: "Builders",
-    focus: "Engineering, development, and technical innovation.",
-    description:
-      "The Builders cohort is where ideas become reality. Members develop blockchain applications, smart contracts, decentralized applications, infrastructure, and innovative Web3 products.",
-    keywords: ["Solidity", "Ethereum", "Full-stack Web3", "Open source"],
-    activities: [
-      "Smart contract development",
-      "Solidity and Ethereum",
-      "Full-stack Web3 development",
-      "AI and blockchain integration",
-      "Hackathons and technical projects",
-      "Open-source contributions",
+    term: "Fall 2026",
+    status: "active",
+    summary:
+      "Members build real club infrastructure in small teams, starting with the Research Pipeline: a shared, searchable archive of trusted sources for member research.",
+    focus: ["Data engineering", "Python", "Next.js", "Automation"],
+    teams: [
+      {
+        name: "Collectors",
+        focus: "Pull articles from approved feeds into the shared database, tagged by topic.",
+      },
     ],
-    areas: ["blockchain-development", "smart-contracts", "web3-dapps", "ai-blockchain"],
+    activities: ["Team build sessions", "Code review on every pull request"],
   },
   {
-    slug: "investments",
+    slug: "investments-fall-2026",
     name: "Investments",
-    focus: "Digital assets, financial markets, and investment analysis.",
-    description:
-      "The Investments cohort explores the intersection of blockchain technology and financial markets. Members study digital assets, evaluate investment opportunities, analyze market trends, and develop informed investment strategies.",
-    keywords: ["Tokenomics", "Valuation", "DeFi", "Venture capital"],
-    activities: [
-      "Cryptocurrency market analysis",
-      "Tokenomics and valuation",
-      "DeFi and decentralized exchanges",
-      "Portfolio management",
-      "Venture capital and Web3 startups",
-      "Trading and risk management",
-    ],
-    areas: ["digital-assets", "defi", "entrepreneurship"],
+    term: "Fall 2026",
+    status: "active",
+    summary:
+      "Members learn how digital-asset markets work and practice disciplined analysis: write the thesis down, show the evidence, and let others try to break it. Research and education, not financial advice.",
+    focus: ["Market structure", "Token research", "Risk", "Portfolio theory"],
   },
   {
-    slug: "research",
-    name: "Research",
-    focus: "Blockchain research, emerging technologies, and industry innovation.",
-    description:
-      "The Research cohort investigates the technologies, protocols, economics, and emerging ideas shaping the blockchain ecosystem. Members explore complex topics and turn research into actionable insights.",
-    keywords: ["Protocols", "Zero-knowledge", "Cryptography", "Layer 1 and 2"],
-    activities: [
-      "Blockchain protocol research",
-      "Zero-knowledge proofs",
-      "Cryptography",
-      "Layer 1 and Layer 2 ecosystems",
-      "DeFi research",
-      "AI and blockchain research",
-      "Technical publications and reports",
-    ],
-    areas: ["research", "cryptography", "zero-knowledge", "ai-blockchain"],
-  },
-  {
-    slug: "marketing",
+    slug: "marketing-fall-2026",
     name: "Marketing",
-    focus: "Branding, communications, partnerships, and community growth.",
-    description:
-      "The Marketing cohort builds the organization’s identity and expands its presence across Ohio State and the broader blockchain ecosystem. Members lead creative campaigns, develop partnerships, and connect the organization with industry professionals.",
-    keywords: ["Brand", "Content", "Partnerships", "Events"],
-    activities: [
-      "Social media and content creation",
-      "Brand development",
-      "Event promotion",
-      "Corporate and industry partnerships",
-      "Community management",
-      "Sponsorships",
-      "Conference and hackathon outreach",
-    ],
-    areas: [],
+    term: "Fall 2026",
+    status: "active",
+    summary:
+      "Members tell the club’s story and grow its reach: social media, design, events, and the relationships with partners and sponsors.",
+    focus: ["Brand and design", "Social media", "Events", "Partnerships"],
+  },
+  {
+    slug: "research-fall-2026",
+    name: "Research",
+    term: "Fall 2026",
+    status: "active",
+    summary:
+      "Members read papers closely, analyze protocols, and write up what they find so others can check it.",
+    focus: ["Protocol analysis", "Paper reading", "On-chain data", "Writing"],
   },
 ];
-
-export const cohortNumber = (i: number) => String(i + 1).padStart(2, "0");

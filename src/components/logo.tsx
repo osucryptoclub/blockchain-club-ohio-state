@@ -1,12 +1,12 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import logo from "@/assets/club-logo.jpg";
+import logo from "@/assets/club-logo.png";
 
-/** The club's seal. The file has white corners, so it is clipped to its circle. */
+/** The club's logo: the block O with a bitcoin. Transparent background. */
 export function Seal({ className = "", sizes, eager = false }: { className?: string; sizes: string; eager?: boolean }) {
   return (
-    <span className={`block shrink-0 overflow-hidden rounded-full ${className}`}>
-      <Image src={logo} alt="" sizes={sizes} loading={eager ? "eager" : "lazy"} className="size-full scale-[1.04] object-cover" />
+    <span className={`block shrink-0 ${className}`}>
+      <Image src={logo} alt="" sizes={sizes} loading={eager ? "eager" : "lazy"} className="size-full object-contain" />
     </span>
   );
 }

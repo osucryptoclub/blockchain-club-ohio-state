@@ -1,4 +1,4 @@
-import { cohorts } from "./cohorts.ts";
+import { tracks } from "./tracks.ts";
 
 /** Why people join, what they learn, and how they contribute. Used on the home and Join pages. */
 
@@ -17,5 +17,5 @@ export const learning = [
   "What zero-knowledge proofs can and cannot do",
 ];
 
-/** Members contribute through a cohort. */
-export const collaborate = cohorts.map(({ name, focus }) => ({ title: name, text: focus }));
+/** Members contribute through one of the four tracks. */
+export const collaborate = tracks.map(({ name, focus }) => ({ title: name, text: focus }));

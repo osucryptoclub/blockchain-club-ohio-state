@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import type { Cohort } from "@/content/cohorts";
+import type { Track } from "@/content/tracks";
 
 /**
  * One diagram per cohort. Each rests in a finished state and moves when its
@@ -154,14 +154,14 @@ function Marketing() {
   );
 }
 
-const glyphs: Record<Cohort["slug"], () => ReactNode> = {
+const glyphs: Record<Track["slug"], () => ReactNode> = {
   builders: Builders,
   investments: Investments,
   research: Research,
   marketing: Marketing,
 };
 
-export function CohortGlyph({ slug, className = "" }: { slug: Cohort["slug"]; className?: string }) {
+export function CohortGlyph({ slug, className = "" }: { slug: Track["slug"]; className?: string }) {
   const Glyph = glyphs[slug];
   return (
     <svg viewBox="0 0 400 400" fill="none" className={`cohort-glyph ${className}`} aria-hidden="true">

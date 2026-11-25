@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import type { CSSProperties } from "react";
-import { leaders } from "@/content/team";
+import { groupMembers } from "@/lib/roster";
 import { sha256 } from "@/lib/sha256";
 
 /** The SHA-256 of a name as 64 blocks, one per digit. Stands in for a portrait. */
@@ -31,12 +31,16 @@ function Hashprint({ name }: { name: string }) {
   );
 }
 
-/** Officers. Details appear only where they have been verified. */
+const leaders = [...groupMembers("president"), ...groupMembers("vice-president")];
+
+/** The president and vice presidents, from src/content/people.ts. */
 export function LeaderCards({ heading: Heading = "h3" }: { heading?: "h3" | "h4" }) {
   return (
     <ul className="grid gap-3 md:grid-cols-3">
-      {leaders.map(({ name, role, bio, education, linkedin, photo }) => (
-        <li key={name} className="rise">
+      {leaders.map(({ id, name, team, bio, major, links, photo }) => {
+        const linkedin = links?.find((l) => l.label === "LinkedIn")?.url;
+        return (
+        <li key={id} className="rise">
           <div
             data-tilt=""
             className="group relative flex h-full flex-col border border-white/12 bg-coal hover:border-white/50"
@@ -59,7 +63,7 @@ export function LeaderCards({ heading: Heading = "h3" }: { heading?: "h3" | "h4"
             <div className="flex flex-1 flex-col p-6 lg:p-8">
               <p className="flex items-center gap-3 font-semibold">
                 <span aria-hidden="true" className="size-2.5 shrink-0 bg-scarlet" />
-                {role}
+                {team?.role}
               </p>
               <Heading className="wide mt-3 text-cell">
                 {linkedin ? (
@@ -76,8 +80,8 @@ export function LeaderCards({ heading: Heading = "h3" }: { heading?: "h3" | "h4"
                   name
                 )}
               </Heading>
-              <p className="muted mt-4">{bio}</p>
-              {education && <p className="mt-4">{education}</p>}
+              {bio && <p className="muted mt-4">{bio}</p>}
+              {major && <p className="mt-4">{major}</p>}
               {linkedin && (
                 <p className="mt-auto pt-6">
                   <a
@@ -94,7 +98,8 @@ export function LeaderCards({ heading: Heading = "h3" }: { heading?: "h3" | "h4"
             </div>
           </div>
         </li>
-      ))}
+        );
+      })}
     </ul>
   );
 }

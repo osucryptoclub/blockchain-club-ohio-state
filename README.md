@@ -14,8 +14,11 @@ You don't need to touch the layout to keep the site current. Everything officers
 | Events | `src/content/events.ts` |
 | Photos and the order of the introduction | `src/content/photos.ts` (files in `src/assets/photos/`) |
 | Projects, research, and hackathon work | `src/content/projects.ts` |
-| Officers | `src/content/team.ts` |
-| The four cohorts | `src/content/cohorts.ts` (each has a diagram in `src/components/cohort-glyph.tsx`) |
+| People: names, roles, cohorts, achievements, links | `src/content/people.ts` |
+| Leadership groups | `src/content/team.ts` |
+| Cohorts (each gets a page and a menu entry) | `src/content/cohorts.ts` |
+| The four tracks, with a logo and diagram each | `src/content/tracks.ts` |
+| Next application window and countdown | `src/content/applications.ts` |
 | Sponsors and partnership options | `src/content/sponsors.ts` |
 | The areas on What We Do | `src/content/areas.ts` (each has a diagram in `src/components/area-glyph.tsx`) |
 | Why people join and how they contribute | `src/content/community.ts` |
@@ -27,7 +30,10 @@ How the content behaves:
 - **Links set to `null`** show as "coming soon" text and cannot be clicked. Add the URL and the link appears everywhere.
 - **Events** sort themselves and move to "Past" within about an hour of ending. Dates need a UTC offset: `-05:00` in winter, `-04:00` in summer. A bad date fails the build and names the event.
 - **Projects** need at least one public link.
-- **Officers** without a photo show a hashprint of their name. Leave out any detail that isn't confirmed.
+- **People** are listed once. A `team` role puts them on the Team page; each `cohorts` entry puts them on that cohort's page. Delete the entry to remove them everywhere.
+- **Cohorts** need only an entry in `cohorts.ts`. Projects join a cohort with `cohort: "<slug>"`. A typo in a cohort, team, or id fails the build and names the entry.
+- **The countdown** stays on "Date to be announced" until `applications.opens` is set, counts down to it, shows the apply button while open, and says when it closed.
+- **Team groups** with no members show a placeholder.
 - **Photos and logos** go in `public/team/` and `public/sponsors/`.
 
 Only publish what is confirmed. No unverified events, sponsors, members, or results.
@@ -79,10 +85,10 @@ tests/          Tests for src/lib
 Two parts are worth knowing before you change them:
 
 - **The Oval network** (`src/lib/oval.ts`, `src/lib/scene.ts`, `src/components/oval-scene.tsx`) is the club's signature graphic: the crossing paths of the Oval as a lit 3D scene with a block at every crossing. Its shape is inspired by the Oval and is not a map of it. Clicking a block runs a shortest-path broadcast to every other block. It measures the hero copy and places itself clear of it.
-- **The introduction** (`src/components/intro/`) plays on the first home page visit of a session and every time the logo is clicked. `intro-script.tsx` decides before first paint, `timeline.ts` holds the GSAP timing, and `stage.ts` draws everything in one WebGL canvas. It is skipped for reduced motion, data saving, and browsers without WebGL 2. Open `/?intro` to replay it.
 - **Cohort logos** (`src/lib/cohort-marks.ts`) are one family cut from the isometric block. SVG and PNG files for print and social are in `public/brand/cohorts/`, for dark and light grounds.
 - **Photo flight** (`src/components/photo-flight.tsx`) moves a camera through club photos as the page scrolls, using CSS only. It is set in columns under reduced motion and in browsers without scroll-driven animation.
 - **Liquid metal** (`src/components/liquid-metal.tsx`) is one small shader used behind closing sections and inside the footer wordmark.
+- **The introduction** (`src/components/intro/`) plays on the first home page visit of a session and every time the logo is clicked. `intro-script.tsx` decides before first paint, `timeline.ts` holds the GSAP timing, and `stage.ts` draws everything in one WebGL canvas. It is skipped for reduced motion, data saving, and browsers without WebGL 2. Open `/?intro` to replay it.
 - **The chain demo** (`src/lib/chain.ts`, `src/components/chain-demo.tsx`) hashes three blocks with SHA-256 in the browser.
 
 ## Brand

@@ -1,52 +1,26 @@
 /**
- * Officers. Everything here must be confirmed: leave a field out rather than
- * guess it. Cards adjust to whatever is present.
- *
- * Example:
- *   {
- *     name: "Full Name",
- *     role: "Vice President",
- *     bio: "One or two sentences.",
- *     education: "Degree or college",              // optional
- *     linkedin: "https://www.linkedin.com/in/...", // optional, checked by the person
- *     photo: "/team/name.jpg",                     // optional; square, 900px or larger, in public/team/
- *   }
+ * Leadership groups. People are assigned to a group in src/content/people.ts
+ * with `team: { group: "<id>", role: "..." }`. A group with nobody assigned
+ * shows its placeholder, or "To be announced".
  */
 
-export type Leader = {
+import type { TeamGroupId } from "./people.ts";
+
+export type TeamGroup = {
+  id: TeamGroupId;
   name: string;
-  role: string;
-  bio: string;
-  education?: string;
-  linkedin?: string;
-  photo?: string;
+  responsibility: string;
+  placeholder?: string;
 };
 
-export const leaders: Leader[] = [
+export const team: TeamGroup[] = [
+  { id: "president", name: "President", responsibility: "Sets direction and speaks for the club." },
+  { id: "vice-president", name: "Vice President", responsibility: "Runs operations and keeps every group moving." },
+  { id: "technical", name: "Technical Leads", responsibility: "Own workshops, code review, and technical standards." },
+  { id: "development", name: "Development Team", responsibility: "Builds and maintains the club’s software." },
   {
-    // Spelling, role, and club match Ohio State's student organization directory.
-    // The club confirmed every officer's college and LinkedIn link. November 2026.
-    name: "Jack Korinek",
-    role: "President",
-    bio: "Sets the club’s direction and speaks for it on campus and beyond.",
-    education: "Fisher College of Business, Ohio State",
-    linkedin: "https://www.linkedin.com/in/jack-korinek/",
-    photo: "/team/jack-korinek.webp",
-  },
-  {
-    name: "Cooper Shalin",
-    role: "Vice President",
-    bio: "Helps run the club and keeps its four cohorts moving.",
-    education: "Fisher College of Business, Ohio State",
-    linkedin: "https://www.linkedin.com/in/cooper-shalin-294a26325/",
-    photo: "/team/cooper-shalin.webp",
-  },
-  {
-    name: "Emilio Laracuente",
-    role: "Vice President",
-    bio: "Helps run the club and keeps its four cohorts moving.",
-    education: "Fisher College of Business, Ohio State",
-    linkedin: "https://www.linkedin.com/in/emiliolaracuente/",
-    photo: "/team/emilio-laracuente.webp",
+    id: "outreach",
+    name: "Marketing and Outreach",
+    responsibility: "Handles events, communication, and partner relationships.",
   },
 ];

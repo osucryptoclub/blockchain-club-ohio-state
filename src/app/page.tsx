@@ -16,10 +16,13 @@ import { Rows } from "@/components/section";
 import { SponsorGrid } from "@/components/sponsor-grid";
 import { collaborate } from "@/content/community";
 import { projectKindList, projects } from "@/content/projects";
+import { applications } from "@/content/applications";
+import { cohortStatuses } from "@/content/cohorts";
 import { site } from "@/content/site";
 import { sponsors } from "@/content/sponsors";
 import { buildChain } from "@/lib/chain";
 import { getEvents } from "@/lib/events";
+import { cohortProjects, orderedCohorts } from "@/lib/roster";
 
 export const metadata: Metadata = {
   title: { absolute: `${site.name} | Build, learn, research, connect` },
@@ -33,6 +36,7 @@ const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 
 export default async function Home() {
   const { upcoming } = await getEvents();
+  const cohort = orderedCohorts[0];
 
   return (
     <>
@@ -94,6 +98,42 @@ export default async function Home() {
           </div>
           <CohortCards />
         </div>
+        {cohort && (
+          <div className="shell mt-20 grid gap-12 lg:mt-28 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <p className="flex items-center gap-3 font-semibold">
+                <span aria-hidden="true" className="size-2.5 animate-pulse bg-scarlet" />
+                {cohortStatuses[cohort.status]}
+              </p>
+              <h3 className="wide mt-5 text-heading">
+                The {cohort.name} cohort, {cohort.term}.
+              </h3>
+              <p className="muted mt-6 max-w-[46ch] text-lead">{cohort.summary}</p>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <Action href={`/cohorts/${cohort.slug}`}>Meet the cohort</Action>
+                <Action href="/join#apply" variant="outline">
+                  {applications.opens ? "Apply to the next one" : "Get notified for the next one"}
+                </Action>
+              </div>
+            </div>
+            <ul className="rule grid self-end border-t border-l sm:grid-cols-2 lg:col-span-7">
+              {(cohort.teams ?? []).map((t) => (
+                <li key={t.name} className="rule border-r border-b p-6 lg:p-8">
+                  <p className="text-sm text-gray-400">Team</p>
+                  <h4 className="wide mt-3 text-cell">{t.name}</h4>
+                  <p className="muted mt-2">{t.focus}</p>
+                </li>
+              ))}
+              {cohortProjects(cohort.slug).map((p) => (
+                <li key={p.slug} className="rule border-r border-b p-6 lg:p-8">
+                  <p className="text-sm text-gray-400">Project</p>
+                  <h4 className="wide mt-3 text-cell">{p.title}</h4>
+                  <p className="muted mt-2">{p.stack.join(", ")}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
 
       <section id="leadership" className="band rule border-t">

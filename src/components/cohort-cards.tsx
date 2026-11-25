@@ -2,10 +2,10 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { CohortGlyph } from "@/components/cohort-glyph";
 import { CohortBadge } from "@/components/cohort-logo";
-import { cohortNumber, cohorts, type Cohort } from "@/content/cohorts";
+import { trackNumber, tracks, type Track } from "@/content/tracks";
 
 /** Each cohort keeps the palette and gets its own ground. */
-export const cohortGrounds: Record<Cohort["slug"], string> = {
+export const cohortGrounds: Record<Track["slug"], string> = {
   builders: "bg-[linear-gradient(135deg,#8b0000,#3a0000_70%)]",
   investments: "bg-[linear-gradient(135deg,#101c33,#070c17_70%)]",
   research: "bg-[linear-gradient(135deg,#1f2023,#0b0b0c_70%)]",
@@ -16,7 +16,7 @@ export const cohortGrounds: Record<Cohort["slug"], string> = {
 export function CohortCards() {
   return (
     <ul className="grid gap-3 lg:grid-cols-2">
-      {cohorts.map(({ slug, name, description, keywords }, i) => (
+      {tracks.map(({ slug, name, description, keywords }, i) => (
         <li key={slug} className="rise">
           <Link
             href={`/cohorts#${slug}`}
@@ -26,7 +26,7 @@ export function CohortCards() {
             <span className="flex items-start justify-between gap-6">
               <span className="flex items-center gap-4">
                 <CohortBadge slug={slug} />
-                <span className="text-sm font-semibold">Cohort {cohortNumber(i)}</span>
+                <span className="text-sm font-semibold">Cohort {trackNumber(i)}</span>
               </span>
               <ArrowRight
                 aria-hidden="true"
