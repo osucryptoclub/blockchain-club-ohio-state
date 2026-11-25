@@ -63,8 +63,14 @@ export function LeaderCards({ heading: Heading = "h3" }: { heading?: "h3" | "h4"
               </p>
               <Heading className="wide mt-3 text-cell">
                 {linkedin ? (
-                  <a href={linkedin} rel="noopener" className="hover:underline hover:underline-offset-4">
+                  <a
+                    href={linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline hover:underline-offset-4"
+                  >
                     {name}
+                    <span className="sr-only"> (LinkedIn, opens in a new tab)</span>
                   </a>
                 ) : (
                   name
@@ -76,8 +82,9 @@ export function LeaderCards({ heading: Heading = "h3" }: { heading?: "h3" | "h4"
                 <p className="mt-auto pt-6">
                   <a
                     href={linkedin}
-                    rel="noopener"
-                    aria-label={`${name} on LinkedIn`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${name} on LinkedIn (opens in a new tab)`}
                     className="link inline-flex items-center gap-1.5 font-semibold"
                   >
                     LinkedIn <ArrowUpRight size={16} aria-hidden="true" />

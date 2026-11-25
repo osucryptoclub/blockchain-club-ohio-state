@@ -36,10 +36,12 @@ export const leaders: Leader[] = [
     name: "Cooper Shalin",
     role: "Vice President",
     bio: "Helps run the club and keeps its four cohorts moving.",
+    linkedin: "https://www.linkedin.com/in/cooper-shalin-294a26325/",
   },
   {
     name: "Emilio Laracuente",
     role: "Vice President",
     bio: "Helps run the club and keeps its four cohorts moving.",
+    linkedin: "https://www.linkedin.com/in/emiliolaracuente/",
   },
 ];

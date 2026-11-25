@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { CohortGlyph } from "@/components/cohort-glyph";
+import { CohortBadge } from "@/components/cohort-logo";
 import { cohortNumber, cohorts, type Cohort } from "@/content/cohorts";
 
 /** Each cohort keeps the palette and gets its own ground. */
@@ -23,7 +24,10 @@ export function CohortCards() {
             className={`cohort group relative isolate flex h-full min-h-[34rem] flex-col overflow-hidden border border-white/12 p-6 transition-colors duration-300 hover:border-white/50 focus-visible:border-white/50 lg:p-9 ${cohortGrounds[slug]}`}
           >
             <span className="flex items-start justify-between gap-6">
-              <span className="text-sm font-semibold">Cohort {cohortNumber(i)}</span>
+              <span className="flex items-center gap-4">
+                <CohortBadge slug={slug} />
+                <span className="text-sm font-semibold">Cohort {cohortNumber(i)}</span>
+              </span>
               <ArrowRight
                 aria-hidden="true"
                 className="shrink-0 transition-transform duration-300 group-hover:translate-x-1"

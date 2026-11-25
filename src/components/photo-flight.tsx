@@ -4,17 +4,19 @@ import { photos, type PhotoId } from "@/content/photos";
 
 /** Where each photo hangs: position on screen, depth, turn, and width. */
 const path: { id: PhotoId; x: number; y: number; z: number; turn: number; width: number }[] = [
-  { id: "classroom", x: 24, y: 50, z: 1300, turn: 16, width: 46 },
-  { id: "rareEvo", x: 78, y: 50, z: 2100, turn: -18, width: 30 },
-  { id: "rooftop", x: 25, y: 48, z: 2900, turn: 18, width: 44 },
-  { id: "clubRoom", x: 76, y: 54, z: 3700, turn: -16, width: 48 },
-  { id: "austinNight", x: 25, y: 50, z: 4500, turn: 14, width: 46 },
-  { id: "conferenceGroup", x: 75, y: 50, z: 5300, turn: -14, width: 46 },
-  { id: "conferenceStage", x: 50, y: 50, z: 6200, turn: 0, width: 64 },
+  { id: "meeting", x: 25, y: 50, z: 1300, turn: 16, width: 46 },
+  { id: "classroom", x: 75, y: 50, z: 2100, turn: -16, width: 46 },
+  { id: "rareEvo", x: 22, y: 50, z: 2900, turn: 18, width: 30 },
+  { id: "rooftop", x: 75, y: 48, z: 3700, turn: -18, width: 44 },
+  { id: "members", x: 25, y: 52, z: 4500, turn: 16, width: 48 },
+  { id: "clubRoom", x: 76, y: 54, z: 5300, turn: -16, width: 48 },
+  { id: "austinNight", x: 25, y: 50, z: 6100, turn: 14, width: 46 },
+  { id: "conferenceGroup", x: 75, y: 50, z: 6900, turn: -14, width: 46 },
+  { id: "conferenceStage", x: 50, y: 50, z: 7800, turn: 0, width: 64 },
 ];
 
 /** How far the camera travels over the section, in pixels of depth. */
-const LENGTH = 6100;
+const LENGTH = 7700;
 
 /**
  * Club photographs hung along a corridor of dark space. Scrolling moves the

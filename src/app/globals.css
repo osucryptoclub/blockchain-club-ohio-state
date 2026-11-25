@@ -363,7 +363,7 @@ html[data-intro]:not([data-intro="out"]) main * {
     }
 
     .flight {
-      height: 540svh;
+      height: 660svh;
       view-timeline: --flight block;
     }
     .flight-stage {
@@ -408,7 +408,7 @@ html[data-intro]:not([data-intro="out"]) main * {
       text-align: center;
       animation: title-pass linear both;
       animation-timeline: --flight;
-      animation-range: contain 0% contain 14%;
+      animation-range: contain 0% contain 11%;
     }
     .flight-photo {
       position: absolute;
@@ -425,14 +425,14 @@ html[data-intro]:not([data-intro="out"]) main * {
         photo-pass linear forwards;
       animation-timeline: --flight, --flight;
       animation-range:
-        contain max(7%, calc(var(--at) * 100% - 46%)) contain max(17%, calc(var(--at) * 100% - 20%)),
-        contain calc(var(--at) * 100% + 2%) contain calc(var(--at) * 100% + 9%);
+        contain max(5.5%, calc(var(--at) * 100% - 36%)) contain max(13%, calc(var(--at) * 100% - 16%)),
+        contain calc(var(--at) * 100% + 1.5%) contain calc(var(--at) * 100% + 7%);
     }
     /* The last photo is where the camera stops. */
     .flight-photo:last-child {
       animation: photo-arrive linear both;
       animation-timeline: --flight;
-      animation-range: contain 54% contain 80%;
+      animation-range: contain 64% contain 84%;
     }
     @media (width < 48rem) {
       .flight-photo {

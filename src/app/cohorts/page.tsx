@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Action } from "@/components/action";
 import { cohortGrounds } from "@/components/cohort-cards";
 import { CohortGlyph } from "@/components/cohort-glyph";
+import { CohortBadge, CohortLogo } from "@/components/cohort-logo";
 import { PageHero } from "@/components/page-hero";
 import { Closing } from "@/components/section";
 import { areas } from "@/content/areas";
@@ -26,10 +27,10 @@ export default function Cohorts() {
         <ul className="shell grid grid-cols-2 lg:grid-cols-4">
           {cohorts.map(({ slug, name }, i) => (
             <li key={slug}>
-              <a href={`#${slug}`} className="group flex items-center gap-4 py-6 text-subhead font-semibold">
-                <span
-                  aria-hidden="true"
-                  className="size-2.5 bg-scarlet transition-transform duration-300 group-hover:scale-150"
+              <a href={`#${slug}`} className="group flex items-center gap-3 py-6 font-semibold sm:gap-4 sm:text-subhead">
+                <CohortLogo
+                  slug={slug}
+                  className="size-8 shrink-0 transition-transform duration-300 group-hover:scale-110 sm:size-10"
                 />
                 <span className="widen">
                   <span className="sr-only">Cohort {cohortNumber(i)}: </span>
@@ -52,8 +53,11 @@ export default function Cohorts() {
           >
             <div className="shell grid gap-x-16 gap-y-12 lg:grid-cols-12">
               <div className="lg:col-span-5">
-                <p className="font-semibold">Cohort {cohortNumber(i)}</p>
-                <h2 id={`${cohort.slug}-title`} className="wide mt-4 text-[clamp(2.5rem,5vw,4.75rem)] leading-none">
+                <p className="flex items-center gap-5 font-semibold">
+                  <CohortBadge slug={cohort.slug} className="size-28 lg:size-32" />
+                  Cohort {cohortNumber(i)}
+                </p>
+                <h2 id={`${cohort.slug}-title`} className="wide mt-8 text-[clamp(2.5rem,5vw,4.75rem)] leading-none">
                   {cohort.name}
                 </h2>
                 <p className="mt-5 max-w-[34ch] text-lead font-semibold">{cohort.focus}</p>

@@ -13,9 +13,11 @@ import { PhotoFlight } from "@/components/photo-flight";
 import { ProjectList } from "@/components/project-list";
 import { ScrollWords } from "@/components/scroll-words";
 import { Rows } from "@/components/section";
+import { SponsorGrid } from "@/components/sponsor-grid";
 import { collaborate } from "@/content/community";
 import { projectKindList, projects } from "@/content/projects";
 import { site } from "@/content/site";
+import { sponsors } from "@/content/sponsors";
 import { buildChain } from "@/lib/chain";
 import { getEvents } from "@/lib/events";
 
@@ -107,6 +109,18 @@ export default async function Home() {
       <section id="photos" aria-labelledby="photos-title" className="rule border-t">
         <PhotoFlight titleId="photos-title" title="From the classroom to the conference floor." />
       </section>
+
+      {sponsors.length > 0 && (
+        <section id="sponsors" className="band bg-white text-black">
+          <div className="shell">
+            <div className="mb-12 flex flex-wrap items-end justify-between gap-8 lg:mb-16">
+              <h2 className="rise wide max-w-[16ch] text-heading">Backed by people building the industry.</h2>
+              <TextLink href="/sponsors">Sponsors &amp; partners</TextLink>
+            </div>
+            <SponsorGrid sponsors={sponsors} />
+          </div>
+        </section>
+      )}
 
       <section id="what-we-do" className="band rule border-t">
         <div className="shell">

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Action } from "@/components/action";
 import { PageHero } from "@/components/page-hero";
-import { Band, Cells, Closing, Split } from "@/components/section";
+import { Band, Cells, Closing } from "@/components/section";
+import { SponsorGrid } from "@/components/sponsor-grid";
 import { site } from "@/content/site";
 import { partnerships, sponsors } from "@/content/sponsors";
 
@@ -23,38 +23,27 @@ export default function Sponsors() {
         know their work early.
       </PageHero>
 
+      <section className="band bg-white text-black">
+        <div className="shell">
+          <div className="mb-12 grid gap-6 lg:mb-16 lg:grid-cols-12 lg:items-end">
+            <h2 className="rise wide text-heading lg:col-span-7">Sponsors &amp; partners</h2>
+            <p className="muted max-w-[46ch] text-lead lg:col-span-5">
+              The organizations that support our students, events, and travel.
+            </p>
+          </div>
+          {sponsors.length > 0 ? (
+            <SponsorGrid sponsors={sponsors} />
+          ) : (
+            <p className="max-w-[50ch] text-lead">
+              We haven’t announced any sponsors yet. Organizations that support the club will be recognized here.
+            </p>
+          )}
+        </div>
+      </section>
+
       <Band title="Ways to work together">
         <Cells columns={2} items={partnerships.map(({ title, body }) => ({ title, text: body }))} />
       </Band>
-
-      <Split title="Our sponsors" tone="paper">
-        {sponsors.length > 0 ? (
-          <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
-            {sponsors.map((s) => (
-              <li key={s.name}>
-                <a href={s.url} rel="noopener sponsored" className="flex min-h-24 items-center">
-                  {s.logo ? (
-                    <Image
-                      src={s.logo}
-                      alt={s.name}
-                      width={280}
-                      height={96}
-                      unoptimized
-                      className="h-16 w-auto max-w-full object-contain"
-                    />
-                  ) : (
-                    <span className="wide text-subhead">{s.name}</span>
-                  )}
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="max-w-[50ch] text-lead">
-            We haven’t announced any sponsors yet. Organizations that support the club will be recognized here.
-          </p>
-        )}
-      </Split>
 
       <Closing title="Tell us what you’re working on." href="/contact" label="Contact the club" />
     </>

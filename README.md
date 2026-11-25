@@ -80,6 +80,7 @@ Two parts are worth knowing before you change them:
 
 - **The Oval network** (`src/lib/oval.ts`, `src/lib/scene.ts`, `src/components/oval-scene.tsx`) is the club's signature graphic: the crossing paths of the Oval as a lit 3D scene with a block at every crossing. Its shape is inspired by the Oval and is not a map of it. Clicking a block runs a shortest-path broadcast to every other block. It measures the hero copy and places itself clear of it.
 - **The introduction** (`src/components/intro/`) plays on the first home page visit of a session and every time the logo is clicked. `intro-script.tsx` decides before first paint, `timeline.ts` holds the GSAP timing, and `stage.ts` draws everything in one WebGL canvas. It is skipped for reduced motion, data saving, and browsers without WebGL 2. Open `/?intro` to replay it.
+- **Cohort logos** (`src/lib/cohort-marks.ts`) are one family cut from the isometric block. SVG and PNG files for print and social are in `public/brand/cohorts/`, for dark and light grounds.
 - **Photo flight** (`src/components/photo-flight.tsx`) moves a camera through club photos as the page scrolls, using CSS only. It is set in columns under reduced motion and in browsers without scroll-driven animation.
 - **Liquid metal** (`src/components/liquid-metal.tsx`) is one small shader used behind closing sections and inside the footer wordmark.
 - **The chain demo** (`src/lib/chain.ts`, `src/components/chain-demo.tsx`) hashes three blocks with SHA-256 in the browser.
