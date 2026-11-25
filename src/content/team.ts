@@ -31,17 +31,20 @@ export const leaders: Leader[] = [
     bio: "Sets the club’s direction and speaks for it on campus and beyond.",
     education: "Fisher College of Business, Ohio State",
     linkedin: "https://www.linkedin.com/in/jack-korinek/",
+    photo: "/team/jack-korinek.webp",
   },
   {
     name: "Cooper Shalin",
     role: "Vice President",
     bio: "Helps run the club and keeps its four cohorts moving.",
     linkedin: "https://www.linkedin.com/in/cooper-shalin-294a26325/",
+    photo: "/team/cooper-shalin.webp",
   },
   {
     name: "Emilio Laracuente",
     role: "Vice President",
     bio: "Helps run the club and keeps its four cohorts moving.",
     linkedin: "https://www.linkedin.com/in/emiliolaracuente/",
+    photo: "/team/emilio-laracuente.webp",
   },
 ];
