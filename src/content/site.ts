@@ -78,6 +78,7 @@ export function channel(id: Channel["id"]): Channel {
 
 export const navigation = [
   { href: "/about", label: "About" },
+  { href: "/cohorts", label: "Cohorts" },
   { href: "/what-we-do", label: "What We Do" },
   { href: "/events", label: "Events" },
   { href: "/projects", label: "Projects" },

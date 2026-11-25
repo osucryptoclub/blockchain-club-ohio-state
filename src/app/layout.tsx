@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import { ViewTransition } from "react";
+import { CardLight } from "@/components/card-light";
 import { Intro } from "@/components/intro/intro";
 import { IntroScript } from "@/components/intro/intro-script";
 import { JsonLd } from "@/components/json-ld";
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </ViewTransition>
         </main>
         <SiteFooter />
+        <CardLight />
         <JsonLd
           data={{
             "@context": "https://schema.org",

@@ -4,13 +4,15 @@ import { Action, TextLink } from "@/components/action";
 import { AreaExplorer } from "@/components/area-explorer";
 import { ChainDemo } from "@/components/chain-demo";
 import { ChannelList } from "@/components/channel-list";
+import { CohortCards } from "@/components/cohort-cards";
 import { EventKinds, EventList } from "@/components/event-list";
+import { LeaderCards } from "@/components/leader-cards";
+import { LiquidMetal } from "@/components/liquid-metal";
 import { OvalScene } from "@/components/oval-scene";
-import { OvalStatic } from "@/components/oval-static";
-import { PhotoWall } from "@/components/photo-wall";
+import { PhotoFlight } from "@/components/photo-flight";
 import { ProjectList } from "@/components/project-list";
 import { ScrollWords } from "@/components/scroll-words";
-import { Cells, Rows } from "@/components/section";
+import { Rows } from "@/components/section";
 import { collaborate } from "@/content/community";
 import { projectKindList, projects } from "@/content/projects";
 import { site } from "@/content/site";
@@ -23,13 +25,6 @@ export const metadata: Metadata = {
 };
 
 const chain = buildChain(["Ada sends Grace 5", "Grace sends Alan 2", "Alan sends Ada 1"]);
-
-const verbs = [
-  { title: "Build", text: "Write contracts, apps, and tools with other students, in the open." },
-  { title: "Learn", text: "Start from zero or go deeper, with people at every level." },
-  { title: "Research", text: "Read the papers, check the claims, and publish what holds up." },
-  { title: "Connect", text: "Meet the engineers, founders, and researchers doing this work." },
-];
 
 const headline = ["Building the Future of ", "Decentralized ", "Technology."];
 const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
@@ -47,7 +42,7 @@ export default async function Home() {
           </p>
           <h1 className="wide mt-6 text-hero md:text-hero-wide lg:mt-8">
             {headline.map((line, i) => (
-              <span key={line} className="hero-line block md:whitespace-nowrap" style={delay(80 + i * 110)}>
+              <span key={line} className="hero-line metal block md:whitespace-nowrap" style={delay(80 + i * 110)}>
                 {line}
               </span>
             ))}
@@ -86,25 +81,37 @@ export default async function Home() {
             </p>
             <TextLink href="/about">About the club</TextLink>
           </div>
-          <div className="mt-16 lg:mt-24">
-            <Cells items={verbs} columns={4} />
-          </div>
         </div>
       </section>
 
-      <section id="photos" aria-labelledby="photos-title" className="pb-[clamp(5rem,10vw,10rem)]">
+      <section id="cohorts" className="band rule border-t">
         <div className="shell">
-          <h2 id="photos-title" className="rise wide mb-12 max-w-[18ch] text-heading lg:mb-16">
-            From the classroom to the conference floor.
-          </h2>
-          <PhotoWall />
+          <div className="mb-12 flex flex-wrap items-end justify-between gap-8 lg:mb-16">
+            <h2 className="rise metal wide max-w-[16ch] text-heading">Four cohorts. Pick where you start.</h2>
+            <TextLink href="/cohorts">All about the cohorts</TextLink>
+          </div>
+          <CohortCards />
         </div>
+      </section>
+
+      <section id="leadership" className="band rule border-t">
+        <div className="shell">
+          <div className="mb-12 flex flex-wrap items-end justify-between gap-8 lg:mb-16">
+            <h2 className="rise metal wide max-w-[14ch] text-heading">Led by students.</h2>
+            <TextLink href="/team">Meet the team</TextLink>
+          </div>
+          <LeaderCards />
+        </div>
+      </section>
+
+      <section id="photos" aria-labelledby="photos-title" className="rule border-t">
+        <PhotoFlight titleId="photos-title" title="From the classroom to the conference floor." />
       </section>
 
       <section id="what-we-do" className="band rule border-t">
         <div className="shell">
           <div className="mb-14 flex flex-wrap items-end justify-between gap-8 lg:mb-20">
-            <h2 className="rise wide max-w-[14ch] text-heading">Every area starts with a question.</h2>
+            <h2 className="rise metal wide max-w-[14ch] text-heading">Every area starts with a question.</h2>
             <TextLink href="/what-we-do">What we do</TextLink>
           </div>
           <AreaExplorer />
@@ -118,7 +125,7 @@ export default async function Home() {
         />
         <div className="shell">
           <div className="mb-14 grid gap-6 lg:mb-20 lg:grid-cols-12">
-            <h2 className="rise wide text-heading lg:col-span-7">Change one word. The chain notices.</h2>
+            <h2 className="rise metal wide text-heading lg:col-span-7">Change one word. The chain notices.</h2>
             <p className="max-w-[46ch] text-lead lg:col-span-5 lg:self-end">
               These three blocks are hashed with SHA-256 in your browser. Edit any of them, then try to
               cover your tracks.
@@ -149,7 +156,7 @@ export default async function Home() {
       <section id="events" className="band">
         <div className="shell">
           <div className="mb-14 grid gap-6 lg:mb-20 lg:grid-cols-12 lg:items-end">
-            <h2 className="rise wide text-heading lg:col-span-7">Show up. Build something.</h2>
+            <h2 className="rise metal wide text-heading lg:col-span-7">Show up. Build something.</h2>
             <div className="lg:col-span-5">
               {upcoming.length === 0 && (
                 <p className="mb-4 max-w-[46ch] text-lead">
@@ -165,7 +172,7 @@ export default async function Home() {
       </section>
 
       <section id="community" className="band relative isolate overflow-hidden bg-scarlet text-white">
-        <OvalStatic className="absolute -top-[25rem] -right-72 -z-10 size-[56rem] text-white/35 max-lg:hidden" />
+        <LiquidMetal className="-z-10" />
         <div className="shell">
           <h2 className="rise wide max-w-[13ch] text-title">Nobody builds a network alone.</h2>
           <div className="mt-16 grid gap-x-16 gap-y-14 lg:mt-28 lg:grid-cols-2">

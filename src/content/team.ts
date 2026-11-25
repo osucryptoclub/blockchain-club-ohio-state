@@ -1,63 +1,45 @@
 /**
- * Leadership. Add people to a group's `members` as they are confirmed. A group
- * with no members shows as "To be announced".
+ * Officers. Everything here must be confirmed: leave a field out rather than
+ * guess it. Cards adjust to whatever is present.
  *
- * Example member:
+ * Example:
  *   {
  *     name: "Full Name",
- *     role: "President",
- *     major: "Optional",
- *     photo: "/team/name.jpg",   // optional; file goes in public/team/, square, 600px or larger
- *     links: [{ label: "LinkedIn", url: "https://..." }],
+ *     role: "Vice President",
+ *     bio: "One or two sentences.",
+ *     education: "Degree or college",              // optional
+ *     linkedin: "https://www.linkedin.com/in/...", // optional, checked by the person
+ *     photo: "/team/name.jpg",                     // optional; square, 900px or larger, in public/team/
  *   }
  */
 
-export type Member = {
+export type Leader = {
   name: string;
   role: string;
-  major?: string;
+  bio: string;
+  education?: string;
+  linkedin?: string;
   photo?: string;
-  links?: { label: string; url: string }[];
 };
 
-export type TeamGroup = {
-  name: string;
-  responsibility: string;
-  /** Shown while `members` is empty. Defaults to "To be announced". */
-  placeholder?: string;
-  members: Member[];
-};
-
-export const team: TeamGroup[] = [
+export const leaders: Leader[] = [
   {
-    name: "President",
-    responsibility: "Sets direction and speaks for the club.",
-    members: [],
+    // Spelling, role, and club match Ohio State's student organization
+    // directory; college and link match the public LinkedIn listing. November 2026.
+    name: "Jack Korinek",
+    role: "President",
+    bio: "Sets the club’s direction and speaks for it on campus and beyond.",
+    education: "Fisher College of Business, Ohio State",
+    linkedin: "https://www.linkedin.com/in/jack-korinek/",
   },
   {
-    name: "Vice President",
-    responsibility: "Runs operations and keeps every group moving.",
-    members: [],
+    name: "Cooper Shalin",
+    role: "Vice President",
+    bio: "Helps run the club and keeps its four cohorts moving.",
   },
   {
-    name: "Technical Leads",
-    responsibility: "Own workshops, code review, and technical standards.",
-    members: [],
-  },
-  {
-    name: "Development Team",
-    responsibility: "Builds and maintains the club’s software.",
-    members: [],
-  },
-  {
-    name: "Marketing and Outreach",
-    responsibility: "Handles events, communication, and partner relationships.",
-    members: [],
-  },
-  {
-    name: "General Members",
-    responsibility: "Everyone who shows up, learns, and contributes.",
-    placeholder: "Open to everyone who joins",
-    members: [],
+    name: "Emilio Laracuente",
+    role: "Vice President",
+    bio: "Helps run the club and keeps its four cohorts moving.",
   },
 ];

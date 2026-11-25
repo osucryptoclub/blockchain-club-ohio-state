@@ -1,3 +1,5 @@
+import { cohorts } from "./cohorts.ts";
+
 /** Why people join, what they learn, and how they contribute. Used on the home and Join pages. */
 
 export const reasons = [
@@ -15,8 +17,5 @@ export const learning = [
   "What zero-knowledge proofs can and cannot do",
 ];
 
-export const collaborate = [
-  { title: "Code", text: "Contribute to club software, hackathon teams, and open-source projects." },
-  { title: "Research", text: "Write protocol analyses, gather data, and review each other’s work." },
-  { title: "Community", text: "Plan events, design materials, and work with partners." },
-];
+/** Members contribute through a cohort. */
+export const collaborate = cohorts.map(({ name, focus }) => ({ title: name, text: focus }));

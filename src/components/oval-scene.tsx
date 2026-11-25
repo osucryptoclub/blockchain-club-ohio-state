@@ -83,6 +83,10 @@ export function OvalScene() {
     let clock = 0;
     let idle = 0;
     let tops: Screen[] = [];
+    // Small copies of the frame, drawn back over it as bloom.
+    const bloom = [4, 12].map((shrink) => ({ shrink, canvas: document.createElement("canvas") }));
+    // How far the hero has scrolled away, from 0 to 1.
+    let away = 0;
     const look = { x: 0, y: 0, tx: 0, ty: 0 };
     const packets: Packet[] = Array.from({ length: PACKETS }, (_, i) => {
       const from = (i * 7) % oval.nodes.length;
@@ -116,11 +120,11 @@ export function OvalScene() {
       if (w < 1 || h < 1 || scale <= 0) return;
       const intro = still.matches ? 1 : clamp(clock / INTRO);
       const at = projector({
-        yaw: YAW + Math.sin(clock * 0.16) * 0.2 + look.x * 0.12,
-        pitch: PITCH + look.y * 0.06,
-        scale,
-        cx,
-        cy,
+        yaw: YAW + Math.sin(clock * 0.16) * 0.2 + look.x * 0.12 + away * 0.35,
+        pitch: PITCH + look.y * 0.06 + away * 0.3,
+        scale: scale * (1 + away * 0.4),
+        cx: cx + away * w * 0.16,
+        cy: cy + away * h * 0.06,
       });
       // Distant things fade into the dark.
       const fog = (p: Screen) => 0.35 + 0.65 * clamp((p.depth + 0.7) / 1.4);
@@ -139,6 +143,27 @@ export function OvalScene() {
       ctx.fillStyle = pool;
       ctx.fillRect(-scale * 1.4, -scale * 1.4, scale * 2.8, scale * 2.8);
       ctx.restore();
+
+      // The lawn is wet: every block leaves a reflection under itself
+      const wet = still.matches ? 1 : clamp((clock - 0.6) / 1.2);
+      if (wet > 0) {
+        for (const [i, g] of ground.entries()) {
+          const half = oval.nodes[i].ring ? 0.017 : 0.027;
+          const depth = heights[i] * 0.9;
+          const foot = [-half, half].map((d) => at(g.x + d, 0, g.z + half));
+          const sunk = [-half, half].map((d) => at(g.x + d, -depth, g.z + half));
+          const shine = ctx.createLinearGradient(0, foot[0].y, 0, sunk[0].y + 0.01);
+          shine.addColorStop(0, `rgba(255,120,110,${0.2 * wet * fog(foot[0])})`);
+          shine.addColorStop(1, "rgba(187,0,0,0)");
+          ctx.fillStyle = shine;
+          ctx.beginPath();
+          ctx.moveTo(foot[0].x, foot[0].y);
+          ctx.lineTo(foot[1].x, foot[1].y);
+          ctx.lineTo(sunk[1].x, sunk[1].y);
+          ctx.lineTo(sunk[0].x, sunk[0].y);
+          ctx.fill();
+        }
+      }
 
       // How far the current broadcast has got
       let alpha = 0;
@@ -282,6 +307,21 @@ export function OvalScene() {
           ctx.globalCompositeOperation = "lighter";
           ctx.fillStyle = halo;
           ctx.fillRect(top.x - radius, top.y - radius, radius * 2, radius * 2);
+          if (flash > 0.02) {
+            // A beam leaves the block as the message arrives
+            const tip = at(g.x, height + 0.55, g.z);
+            const beam = ctx.createLinearGradient(0, top.y, 0, tip.y);
+            beam.addColorStop(0, `rgba(255,90,75,${0.75 * flash})`);
+            beam.addColorStop(1, "rgba(187,0,0,0)");
+            ctx.fillStyle = beam;
+            const reachX = half * scale * top.k * 0.7;
+            ctx.beginPath();
+            ctx.moveTo(top.x - reachX, top.y);
+            ctx.lineTo(top.x + reachX, top.y);
+            ctx.lineTo(tip.x + reachX * 2, tip.y);
+            ctx.lineTo(tip.x - reachX * 2, tip.y);
+            ctx.fill();
+          }
           ctx.globalCompositeOperation = "source-over";
         }
 
@@ -311,6 +351,21 @@ export function OvalScene() {
           ctx.strokeRect(top.x - 14, top.y - 14, 28, 28);
         }
       }
+
+      // Bloom: bright areas spill light over what surrounds them
+      ctx.globalCompositeOperation = "lighter";
+      for (const { shrink, canvas: copy } of bloom) {
+        const small = copy.getContext("2d");
+        if (!small) continue;
+        const [bw, bh] = [Math.max(1, Math.round(w / shrink)), Math.max(1, Math.round(h / shrink))];
+        if (copy.width !== bw || copy.height !== bh) [copy.width, copy.height] = [bw, bh];
+        small.globalCompositeOperation = "copy";
+        small.drawImage(canvas, 0, 0, bw, bh);
+        ctx.globalAlpha = shrink === 4 ? 0.28 : 0.4;
+        ctx.drawImage(copy, 0, 0, w, h);
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
     };
 
     const start = (origin?: number, announce = true) => {
@@ -339,6 +394,7 @@ export function OvalScene() {
 
     function tick(now: number) {
       frame = 0;
+      away = still.matches ? 0 : clamp(window.scrollY / Math.max(1, view.h));
       const moving = !still.matches && !pausedRef.current && !covered();
       const dt = last && moving ? Math.min((now - last) / 1000, 0.05) : 0;
       last = moving ? now : 0;
@@ -387,7 +443,8 @@ export function OvalScene() {
 
     const resize = new ResizeObserver(() => {
       const { width, height } = canvas.getBoundingClientRect();
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      // Bloom reads the frame back, so large screens give up some density.
+      const ratio = Math.min(window.devicePixelRatio || 1, width > 1200 ? 1.5 : 2);
       canvas.width = Math.max(1, Math.round(width * ratio));
       canvas.height = Math.max(1, Math.round(height * ratio));
       view = frameCamera(canvas);

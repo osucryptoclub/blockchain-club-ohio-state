@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChannelLink } from "@/components/channel-link";
+import { LiquidMetal } from "@/components/liquid-metal";
 import { LogoLink, Seal } from "@/components/logo";
 import { disclaimer, navigation, site } from "@/content/site";
 
@@ -46,9 +47,12 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <p className="wide rise mt-20 text-[min(10.9vw,10.15rem)] leading-[0.92] lg:mt-28">
-          Blockchain Club <span className="block">at Ohio State</span>
-        </p>
+        <div className="relative isolate mt-20 -mx-1 overflow-hidden lg:mt-28">
+          <LiquidMetal className="-z-10" shine={0.9} />
+          <p className="cutout wide px-1 py-[0.06em] text-[min(10.9vw,10.15rem)] leading-[0.92]">
+            Blockchain Club <span className="block pb-[0.1em]">at Ohio State</span>
+          </p>
+        </div>
 
         <div className="rule mt-14 border-t pt-6">
           <p className="max-w-[90ch] text-sm text-gray-400">{disclaimer}</p>

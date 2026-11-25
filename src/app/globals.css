@@ -147,6 +147,21 @@
   }
 }
 
+/* Brushed metal type for large headings on black. The padding keeps
+   descenders inside the box that the gradient paints. */
+@utility metal {
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+  color: transparent;
+  background: linear-gradient(100deg, #fff 0%, #fff 30%, #8d969c 46%, #fff 58%, #c3cace 78%, #fff 100%) 0 0 / 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  @media (forced-colors: active) {
+    color: CanvasText;
+    background: none;
+  }
+}
+
 @utility tilt {
   perspective: 1100px;
   & > * {
@@ -157,6 +172,44 @@
 .progress {
   transform: scaleX(0);
   transform-origin: left;
+}
+
+/* Film grain over everything. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.055;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.35'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Cards that tilt under the pointer with a light on their surface. */
+[data-tilt] {
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition:
+    transform 500ms var(--ease-block),
+    border-color 300ms;
+}
+[data-tilt]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(26rem circle at var(--mx, 50%) var(--my, 0%), rgb(255 255 255 / 0.16), transparent 70%);
+  transition: opacity 400ms;
+}
+[data-tilt]:hover::after {
+  opacity: 1;
+}
+
+/* Letters cut from a black sheet, showing the metal beneath. */
+.cutout {
+  background: #000;
+  color: #fff;
+  mix-blend-mode: multiply;
 }
 
 /* The header stays put while pages change beneath it. */
@@ -223,6 +276,9 @@ html[data-intro]:not([data-intro="out"]) main * {
 /* Motion. Off unless the visitor allows it, and every element is fully visible
    when it is off or unsupported. */
 @media (prefers-reduced-motion: no-preference) {
+  [data-tilt]:hover {
+    transition-duration: 120ms, 300ms;
+  }
   html {
     scroll-behavior: smooth;
   }
@@ -251,6 +307,36 @@ html[data-intro]:not([data-intro="out"]) main * {
     animation: pop 500ms var(--ease-block) 350ms backwards;
   }
 
+  .cohort-glyph .lift,
+  .cohort-glyph .candle,
+  .cohort-glyph .node,
+  .cohort-glyph .ring,
+  .hashprint rect {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 600ms var(--ease-block);
+    transition-delay: calc(var(--i) * 45ms);
+  }
+  .cohort:is(:hover, :focus-visible) .lift {
+    transform: translateY(calc(-10px - var(--i) * 7px));
+  }
+  .cohort:is(:hover, :focus-visible) .candle {
+    transform: translateY(-12px) scaleY(1.12);
+  }
+  .cohort:is(:hover, :focus-visible) .node {
+    transform: scale(1.35);
+  }
+  .cohort:is(:hover, :focus-visible) .ring {
+    transform: scale(1.07);
+  }
+  .cohort:is(:hover, :focus-visible) .trace {
+    stroke-dasharray: 1;
+    animation: draw 1200ms var(--ease-block);
+  }
+  .group:hover .hashprint rect {
+    transform: rotate(90deg) scale(1.15);
+  }
+
   dialog[open] .menu-item {
     animation: enter 520ms var(--ease-block) backwards;
     animation-delay: calc(var(--i) * 40ms);
@@ -261,6 +347,99 @@ html[data-intro]:not([data-intro="out"]) main * {
       animation: rise linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 100%;
+    }
+    .metal {
+      animation: sheen linear both;
+      animation-timeline: view();
+    }
+    .rise.metal {
+      animation:
+        rise linear both,
+        sheen linear both;
+      animation-timeline: view(), view();
+      animation-range:
+        entry 0% entry 100%,
+        normal;
+    }
+
+    .flight {
+      height: 540svh;
+      view-timeline: --flight block;
+    }
+    .flight-stage {
+      position: sticky;
+      top: 4.5rem;
+      height: calc(100svh - 4.5rem);
+      overflow: hidden;
+      perspective: 1000px;
+    }
+    .flight-glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(60vmax 22vmax at 50% 104%, rgb(187 0 0 / 0.75), transparent 72%),
+        radial-gradient(34vmax 34vmax at 50% 50%, rgb(139 0 0 / 0.34), transparent 70%);
+      animation: glow linear both;
+      animation-timeline: --flight;
+    }
+    .flight-camera {
+      position: absolute;
+      inset: 0;
+      max-width: none;
+      transform-style: preserve-3d;
+      animation: fly linear both;
+      animation-timeline: --flight;
+      animation-range: contain 0% contain 100%;
+    }
+    .flight-list {
+      display: block;
+      columns: auto;
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+    }
+    .flight-title {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 100%;
+      margin: 0;
+      padding-inline: 1.25rem;
+      text-align: center;
+      animation: title-pass linear both;
+      animation-timeline: --flight;
+      animation-range: contain 0% contain 14%;
+    }
+    .flight-photo {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: min(var(--w), 74svh * var(--ratio));
+      margin: 0;
+      aspect-ratio: var(--ratio);
+      transform: translate(-50%, -50%) translateZ(var(--z)) rotateY(var(--turn));
+      backface-visibility: hidden;
+      box-shadow: 0 0 120px rgb(187 0 0 / 0.35);
+      animation:
+        photo-arrive linear both,
+        photo-pass linear forwards;
+      animation-timeline: --flight, --flight;
+      animation-range:
+        contain max(7%, calc(var(--at) * 100% - 46%)) contain max(17%, calc(var(--at) * 100% - 20%)),
+        contain calc(var(--at) * 100% + 2%) contain calc(var(--at) * 100% + 9%);
+    }
+    /* The last photo is where the camera stops. */
+    .flight-photo:last-child {
+      animation: photo-arrive linear both;
+      animation-timeline: --flight;
+      animation-range: contain 54% contain 80%;
+    }
+    @media (width < 48rem) {
+      .flight-photo {
+        transform: translate(-50%, -50%) translateZ(var(--z));
+        left: calc(50% + (var(--x) - 50%) * 0.24);
+        width: min(var(--w) * 2, 84vw, 60svh * var(--ratio));
+      }
     }
     .drift {
       animation: drift linear both;
@@ -308,6 +487,44 @@ html[data-intro]:not([data-intro="out"]) main * {
   from {
     opacity: 0;
     transform: translateY(3rem);
+  }
+}
+@keyframes sheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+@keyframes fly {
+  to {
+    transform: translateZ(var(--length));
+  }
+}
+@keyframes glow {
+  from {
+    opacity: 0.35;
+  }
+}
+@keyframes title-pass {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+@keyframes photo-arrive {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes photo-pass {
+  to {
+    opacity: 0;
   }
 }
 @keyframes drift {
