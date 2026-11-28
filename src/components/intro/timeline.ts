@@ -3,7 +3,7 @@ import { createStage, type Look, type Texture, type TileDraw } from "@/component
 import { photos, scenes, type PhotoId } from "@/content/photos";
 
 /** Seconds each photograph scene lasts before the next one builds over it. */
-const SCENE = 1.8;
+const SCENE = 1.6;
 /** Seconds the last scene waits before opening the page on its own. */
 const WAIT = 3;
 /** Seconds to wait for a late photo before moving on without it. */

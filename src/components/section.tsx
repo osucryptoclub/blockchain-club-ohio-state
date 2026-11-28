@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Action } from "@/components/action";
+import { LiquidMetal } from "@/components/liquid-metal";
 
 const tones = {
   black: "bg-black text-white",
@@ -114,7 +115,8 @@ export function Cells({ items, columns: count = 3 }: { items: Entry[]; columns?:
 /** Closing prompt used at the end of inner pages. */
 export function Closing({ title, href, label }: { title: string; href: string; label: string }) {
   return (
-    <section className="bg-scarlet py-24 text-white lg:py-36">
+    <section className="relative isolate overflow-hidden bg-scarlet py-24 text-white lg:py-36">
+      <LiquidMetal className="-z-10" />
       <div className="shell flex flex-wrap items-end justify-between gap-10">
         <h2 className="rise wide max-w-[18ch] text-heading">{title}</h2>
         <Action href={href} variant="inverse">

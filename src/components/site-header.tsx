@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, type CSSProperties } from "react";
 import { CohortsMenu } from "@/components/cohorts-menu";
-import { Wordmark } from "@/components/logo";
+import { LogoLink, Wordmark } from "@/components/logo";
 import { navigation } from "@/content/site";
 import { orderedCohorts } from "@/lib/roster";
 
@@ -17,9 +17,9 @@ export function SiteHeader() {
   return (
     <header className="site-header sticky top-0 z-40 border-b border-white/15 bg-black/85 text-white backdrop-blur-xl backdrop-saturate-150">
       <div className="shell flex h-18 items-center justify-between gap-6">
-        <Link href="/">
+        <LogoLink>
           <Wordmark />
-        </Link>
+        </LogoLink>
 
         <nav aria-label="Main" className="hidden items-center gap-8 xl:flex">
           {navigation.map(({ href, label, menu }) =>
@@ -67,9 +67,9 @@ export function SiteHeader() {
         className="m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-scarlet text-white"
       >
         <div className="shell flex h-18 items-center justify-between border-b border-white/25">
-          <Link href="/" onClick={close}>
+          <LogoLink>
             <Wordmark />
-          </Link>
+          </LogoLink>
           <button
             type="button"
             aria-label="Close menu"

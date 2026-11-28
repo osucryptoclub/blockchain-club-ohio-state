@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
 import logo from "@/assets/club-logo.png";
 
 /** The club's logo: the block O with a bitcoin. Transparent background. */
@@ -7,6 +8,19 @@ export function Seal({ className = "", sizes, eager = false }: { className?: str
     <span className={`block shrink-0 ${className}`}>
       <Image src={logo} alt="" sizes={sizes} loading={eager ? "eager" : "lazy"} className="size-full object-contain" />
     </span>
+  );
+}
+
+/**
+ * The logo's link home, which always plays the introduction. It loads the page
+ * in full because the choice to play is made before first paint.
+ */
+export function LogoLink({ children }: { children: ReactNode }) {
+  return (
+    // eslint-disable-next-line @next/next/no-html-link-for-pages
+    <a href="/?intro" className="block w-fit">
+      {children}
+    </a>
   );
 }
 

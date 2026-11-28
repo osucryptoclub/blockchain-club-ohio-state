@@ -29,6 +29,8 @@ export type Person = {
   id: string;
   name: string;
   major?: string;
+  /** One or two sentences, shown on leadership cards. */
+  bio?: string;
   photo?: string;
   /** A leadership or operations role. Omit for members who hold none. */
   team?: { group: TeamGroupId; role: string };
@@ -38,4 +40,34 @@ export type Person = {
   links?: { label: string; url: string }[];
 };
 
-export const people: Person[] = [];
+export const people: Person[] = [
+  {
+    // Spelling and role match Ohio State's student organization directory. The
+    // club confirmed every officer's college, photo, and LinkedIn. November 2026.
+    id: "jack-korinek",
+    name: "Jack Korinek",
+    major: "Fisher College of Business, Ohio State",
+    bio: "Sets the club’s direction and speaks for it on campus and beyond.",
+    photo: "/team/jack-korinek.webp",
+    team: { group: "president", role: "President" },
+    links: [{ label: "LinkedIn", url: "https://www.linkedin.com/in/jack-korinek/" }],
+  },
+  {
+    id: "cooper-shalin",
+    name: "Cooper Shalin",
+    major: "Fisher College of Business, Ohio State",
+    bio: "Helps run the club and keeps its four cohorts moving.",
+    photo: "/team/cooper-shalin.webp",
+    team: { group: "vice-president", role: "Vice President" },
+    links: [{ label: "LinkedIn", url: "https://www.linkedin.com/in/cooper-shalin-294a26325/" }],
+  },
+  {
+    id: "emilio-laracuente",
+    name: "Emilio Laracuente",
+    major: "Fisher College of Business, Ohio State",
+    bio: "Helps run the club and keeps its four cohorts moving.",
+    photo: "/team/emilio-laracuente.webp",
+    team: { group: "vice-president", role: "Vice President" },
+    links: [{ label: "LinkedIn", url: "https://www.linkedin.com/in/emiliolaracuente/" }],
+  },
+];

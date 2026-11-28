@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ChannelLink } from "@/components/channel-link";
-import { Seal } from "@/components/logo";
+import { LiquidMetal } from "@/components/liquid-metal";
+import { LogoLink, Seal } from "@/components/logo";
 import { disclaimer, navigation, secondaryNavigation, site } from "@/content/site";
 
 export function SiteFooter() {
@@ -9,7 +10,10 @@ export function SiteFooter() {
       <div className="shell pt-16 pb-10 lg:pt-24">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-12">
           <div className="sm:col-span-2 lg:col-span-5">
-            <Seal className="size-28" sizes="112px" />
+            <LogoLink>
+              <Seal className="size-28" sizes="112px" />
+              <span className="sr-only">Blockchain Club at Ohio State, home</span>
+            </LogoLink>
             <p className="muted mt-6 max-w-[30ch] text-lead">{site.tagline}</p>
           </div>
           <nav aria-label="Footer" className="lg:col-span-4">
@@ -43,9 +47,12 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <p className="wide rise mt-20 text-[min(10.9vw,10.15rem)] leading-[0.92] lg:mt-28">
-          Blockchain Club <span className="block">at Ohio State</span>
-        </p>
+        <div className="relative isolate mt-20 -mx-1 overflow-hidden lg:mt-28">
+          <LiquidMetal className="-z-10" shine={0.9} />
+          <p className="cutout wide px-1 py-[0.06em] text-[min(10.9vw,10.15rem)] leading-[0.92]">
+            Blockchain Club <span className="block pb-[0.1em]">at Ohio State</span>
+          </p>
+        </div>
 
         <div className="rule mt-14 border-t pt-6">
           <p className="max-w-[90ch] text-sm text-gray-400">{disclaimer}</p>

@@ -19,6 +19,10 @@ import conferenceGroup from "@/assets/photos/conference-group.webp";
 import conferenceGroupSm from "@/assets/photos/conference-group-sm.webp";
 import conferenceStage from "@/assets/photos/conference-stage.webp";
 import conferenceStageSm from "@/assets/photos/conference-stage-sm.webp";
+import meeting from "@/assets/photos/meeting.webp";
+import meetingSm from "@/assets/photos/meeting-sm.webp";
+import members from "@/assets/photos/members.webp";
+import membersSm from "@/assets/photos/members-sm.webp";
 import rareEvo from "@/assets/photos/rare-evo.webp";
 import rareEvoSm from "@/assets/photos/rare-evo-sm.webp";
 import rooftop from "@/assets/photos/rooftop.webp";
@@ -45,6 +49,18 @@ export const photos = {
     small: clubRoomSm,
     alt: "A large group of students in matching club shirts.",
     focus: [0.5, 0.5],
+  },
+  meeting: {
+    full: meeting,
+    small: meetingSm,
+    alt: "A full room of students applauds three speakers at the front of a meeting.",
+    focus: [0.5, 0.5],
+  },
+  members: {
+    full: members,
+    small: membersSm,
+    alt: "Twelve students standing arm in arm in front of a glass wall at night.",
+    focus: [0.5, 0.55],
   },
   rareEvo: {
     full: rareEvo,
@@ -93,6 +109,17 @@ export type Scene = { word: string; align?: "right"; caption?: string; wide: Til
 export const scenes: Scene[] = [
   {
     word: "Learn.",
+    wide: [
+      { photo: "meeting", rect: [0.05, 0.1, 0.5, 0.6], drift: [-0.02, 0] },
+      { photo: "members", rect: [0.47, 0.36, 0.48, 0.47], drift: [0.02, -0.01] },
+    ],
+    tall: [
+      { photo: "meeting", rect: [0, 0.13, 1, 0.34], drift: [-0.02, 0] },
+      { photo: "members", rect: [0, 0.48, 1, 0.28], drift: [0.02, 0] },
+    ],
+  },
+  {
+    word: "Belong.",
     wide: [
       { photo: "classroom", rect: [0.05, 0.1, 0.5, 0.62], drift: [-0.02, 0] },
       { photo: "clubRoom", rect: [0.47, 0.36, 0.48, 0.47], drift: [0.02, -0.01] },

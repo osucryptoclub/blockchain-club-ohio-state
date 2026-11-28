@@ -84,6 +84,7 @@ export const navigation: { href: string; label: string; menu?: "cohorts" }[] = [
   { href: "/about", label: "About" },
   { href: "/what-we-do", label: "What We Do" },
   { href: "/cohorts", label: "Cohorts", menu: "cohorts" },
+  { href: "/labs", label: "Labs" },
   { href: "/projects", label: "Projects" },
   { href: "/events", label: "Events" },
   { href: "/team", label: "Team" },
@@ -92,6 +93,7 @@ export const navigation: { href: string; label: string; menu?: "cohorts" }[] = [
 
 /** Pages linked from the footer but not the main menu. */
 export const secondaryNavigation = [
+  { href: "/find-your-cohort", label: "Find Your Cohort" },
   { href: "/contact", label: "Contact" },
   { href: "/brand", label: "Brand" },
 ];

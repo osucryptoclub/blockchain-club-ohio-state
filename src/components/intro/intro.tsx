@@ -8,7 +8,7 @@ import type { Intro as Player } from "./timeline";
 
 /**
  * The cinematic introduction. It covers the home page on the first visit of a
- * session and is skipped for reduced motion, data saving, deep links, and
+ * session and whenever the logo is clicked, and is skipped for reduced motion, data saving, deep links, and
  * browsers without WebGL 2. `introScript` makes that choice before first paint.
  */
 export function Intro() {

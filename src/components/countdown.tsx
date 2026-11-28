@@ -49,7 +49,7 @@ function Cells({ values }: { values?: ReturnType<typeof parts> }) {
           >
             {values ? String(values[u]).padStart(2, "0") : "––"}
           </span>
-          <span className="mt-3 block text-xs tracking-wider text-white/70 uppercase sm:text-sm">{unitLabels[u]}</span>
+          <span className="mt-3 block text-xs tracking-wider text-white/95 uppercase sm:text-sm">{unitLabels[u]}</span>
         </li>
       ))}
     </ol>

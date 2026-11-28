@@ -13,7 +13,7 @@ export function PageHero({ title, children, action }: Props) {
       />
       <OvalStatic className="absolute -right-48 -bottom-[19rem] -z-10 size-[40rem] text-white/55 lg:-right-24 lg:-bottom-[26rem] lg:size-[62rem]" />
       <div className="shell flex flex-col justify-end pt-24 pb-64 lg:min-h-[min(44rem,calc(100svh-9rem))] lg:pt-36 lg:pb-28">
-        <h1 className="enter wide max-w-[14ch] text-title">{title}</h1>
+        <h1 className="enter metal wide max-w-[14ch] text-title">{title}</h1>
         <p className="enter mt-8 max-w-[44ch] text-lead" style={{ "--delay": "120ms" } as CSSProperties}>
           {children}
         </p>
