@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { applications } from "../src/content/applications.ts";
-import { phase, parts } from "../src/lib/applications.ts";
+import { formatLong, formatShort, phase, parts } from "../src/lib/applications.ts";
 import { cohortMembers, cohortRole, validate } from "../src/lib/roster.ts";
 import type { Cohort } from "../src/content/cohorts.ts";
 import type { Person } from "../src/content/people.ts";
@@ -49,15 +49,26 @@ test("cohort members and roles resolve", () => {
 });
 
 test("the application window moves through its phases", () => {
-  const apps = { cohort: "x", opens: "2027-01-12T09:00:00-05:00", closes: "2027-01-26T23:59:00-05:00", applyUrl: null };
+  const apps = { cohort: "x", opens: "2027-01-12T09:00:00-05:00", deadline: "2027-01-23T23:59:59-05:00", applyUrl: null };
   const opens = Date.parse(apps.opens);
-  assert.equal(phase({ ...apps, opens: null }, 0).state, "unannounced");
+  const deadline = Date.parse(apps.deadline);
+  assert.equal(phase({ ...apps, opens: null, deadline: null }, 0).state, "unannounced");
   assert.equal(phase(apps, opens - 1).state, "upcoming");
-  assert.equal(phase(apps, opens).state, "open");
-  assert.equal(phase(apps, Date.parse(apps.closes)).state, "closed");
-  assert.equal(phase({ ...apps, closes: null }, opens + 1e12).state, "open");
+  assert.deepEqual(phase(apps, opens), { state: "open", deadline, remaining: deadline - opens });
+  assert.equal(phase(apps, deadline - 1).state, "open");
+  assert.equal(phase(apps, deadline).state, "closed");
+  // With no opening date, applications are open until the deadline.
+  assert.equal(phase({ ...apps, opens: null }, 0).state, "open");
+  assert.equal(phase({ ...apps, opens: null }, deadline + 1).state, "closed");
+  assert.equal(phase({ ...apps, deadline: null }, opens + 1e12).state, "open");
   assert.throws(() => phase({ ...apps, opens: "2027-01-12" }, 0), /offset/);
+  assert.throws(() => phase({ ...apps, opens: apps.deadline, deadline: apps.opens }, 0), /after/);
   assert.doesNotThrow(() => phase(applications, Date.now()));
+});
+
+test("the deadline is January 23, 2027, set in one place", () => {
+  assert.equal(formatLong(applications.deadline!), "January 23, 2027");
+  assert.equal(formatShort(applications.deadline!), "Jan 23");
 });
 
 test("countdown parts add up", () => {

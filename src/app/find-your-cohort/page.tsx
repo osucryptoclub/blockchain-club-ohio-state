@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { CohortFinder } from "@/components/cohort-finder";
+import { Countdown } from "@/components/countdown";
 import { Closing } from "@/components/section";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Find Your Cohort",
-  description: `Six questions that point you to Builders, Investments, Research, or Marketing at ${site.name}.`,
+  description: `Ten questions that point you to Builders, Investments, Research, or Marketing at ${site.name}.`,
   alternates: { canonical: "/find-your-cohort" },
 };
 
@@ -18,7 +19,7 @@ export default function FindYourCohort() {
           <CohortFinder />
         </div>
       </section>
-      <Closing title="Ready to apply?" href="/join#apply" label="See when applications open" />
+      <Closing title="Ready to apply?" href="/join#apply" label="How to apply" note={<Countdown variant="line" />} />
     </>
   );
 }

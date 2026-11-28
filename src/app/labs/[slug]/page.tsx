@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { Action, TextLink } from "@/components/action";
 import { CohortBadge } from "@/components/cohort-logo";
 import { Lab } from "@/components/labs/lab";
@@ -23,7 +24,17 @@ export async function generateMetadata({ params }: PageProps<"/labs/[slug]">): P
   };
 }
 
-export default async function LabPage({ params }: PageProps<"/labs/[slug]">) {
+export default function LabPage({ params }: PageProps<"/labs/[slug]">) {
+  // Everything here depends on the URL, so it renders inside a boundary and the
+  // shared shell (header, footer) can show at once on navigation.
+  return (
+    <Suspense fallback={<div className="min-h-svh bg-black" />}>
+      <LabBody params={params} />
+    </Suspense>
+  );
+}
+
+async function LabBody({ params }: Pick<PageProps<"/labs/[slug]">, "params">) {
   const lab = getLab((await params).slug);
   if (!lab) notFound();
   const track = tracks.find((t) => t.slug === lab.slug);

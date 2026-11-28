@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
 import { cohortGrounds } from "@/components/cohort-cards";
 import { Action, TextLink } from "@/components/action";
 import { CohortGlyph } from "@/components/cohort-glyph";
 import { MonumentViewer } from "@/components/world/monument-viewer";
+import { DeadlineBand } from "@/components/deadline-band";
+import { campus } from "@/content/campus";
 import { getLab } from "@/content/labs";
 import { CohortBadge, CohortLogo } from "@/components/cohort-logo";
 import { PageHero } from "@/components/page-hero";
-import { Closing, Rows, Split } from "@/components/section";
+import { Rows, Split } from "@/components/section";
 import { areas } from "@/content/areas";
 import { cohortStatuses } from "@/content/cohorts";
 import { site } from "@/content/site";
@@ -22,16 +24,30 @@ export const metadata: Metadata = {
 };
 
 const format = [
-  { title: "Apply", text: "Applications open before each semester. Any major, any level of experience." },
+  { title: "Apply", text: "Pick one cohort and apply before the deadline. Any major, any level of experience." },
   { title: "Join a team", text: "Each cohort splits into small teams that own one part of a real project." },
   { title: "Ship", text: "Work is reviewed like production code and published under the club’s GitHub." },
   { title: "Get credit", text: "Members are named on the cohort page with their team, role, and results." },
 ];
 
+/** A dated cohort's place among the four tracks, for numbering and order. */
+const trackIndex = (name: string) => Math.max(0, tracks.findIndex((t) => t.name === name));
+
 export default function Cohorts() {
   return (
     <>
-      <PageHero title="Four cohorts. One club." action={<Action href="/join#apply">Apply to the next cohort</Action>}>
+      <PageHero
+        title="Four cohorts. One club."
+        photo={campus.ovalFog}
+        action={
+          <>
+            <Action href="#apply-deadline">Apply to a cohort</Action>
+            <Action href="/find-your-cohort" variant="outline">
+              Find your cohort
+            </Action>
+          </>
+        }
+      >
         Builders, Investments, Research, and Marketing. Choose the one that matches what you want to do.
       </PageHero>
 
@@ -90,6 +106,30 @@ export default function Cohorts() {
                     </li>
                   ))}
                 </ul>
+                <div className="mt-12 grid gap-10 sm:grid-cols-2">
+                  <div>
+                    <h3 className="font-semibold">Skills you’ll build</h3>
+                    <ul className="mt-4 grid gap-3">
+                      {cohort.skills.map((s) => (
+                        <li key={s} className="flex gap-3">
+                          <Check size={18} aria-hidden="true" className="mt-0.5 shrink-0" />
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Who it suits</h3>
+                    <ul className="mt-4 grid gap-3">
+                      {cohort.fit.map((f) => (
+                        <li key={f} className="flex gap-3">
+                          <span aria-hidden="true" className="mt-2 size-2 shrink-0 bg-white" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
                 <div className="mt-12 border border-white/30 bg-black/35 p-6 lg:p-8">
                   <h3 className="wide text-cell">{getLab(cohort.slug)?.title}</h3>
                   <p className="mt-3 mb-5 max-w-[52ch] text-white/85">{getLab(cohort.slug)?.hook}</p>
@@ -131,7 +171,7 @@ export default function Cohorts() {
         <div className="shell">
           <h2 className="rise wide mb-12 text-heading lg:mb-16">Every cohort</h2>
           <ul className="border-t-2 border-current">
-            {orderedCohorts.map((c, i) => {
+            {[...orderedCohorts].sort((a, b) => trackIndex(a.name) - trackIndex(b.name)).map((c) => {
               const members = cohortMembers(c.slug).length;
               const projects = cohortProjects(c.slug).length;
               return (
@@ -141,7 +181,7 @@ export default function Cohorts() {
                     className="group grid gap-x-10 gap-y-4 py-10 lg:grid-cols-12 lg:items-center lg:py-14"
                   >
                     <span className="font-mono text-sm text-gray-400 lg:col-span-1">
-                      {String(orderedCohorts.length - i).padStart(2, "0")}
+                      {trackNumber(trackIndex(c.name))}
                     </span>
                     <span className="lg:col-span-5">
                       <span className="widen block text-[clamp(2rem,4.4vw,3.75rem)] leading-none">{c.name}</span>
@@ -185,7 +225,7 @@ export default function Cohorts() {
         <Rows items={format} ordered />
       </Split>
 
-      <Closing title="Found your cohort?" href="/join#apply" label="See when applications open" />
+      <DeadlineBand photo={campus.stadium} />
     </>
   );
 }

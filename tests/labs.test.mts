@@ -78,11 +78,16 @@ test("the network is connected, repeatable, and has a best answer worth finding"
 
 test("every track has a lab, and the quiz can lead to every track", () => {
   assert.deepEqual(labs.map((l) => l.slug).sort(), tracks.map((t) => t.slug).sort());
-  for (const [i, t] of tracks.entries()) {
-    const { ranked, hash } = score(questions, questions.map(() => i));
+  for (const t of tracks) {
+    // Answer every question with the answer that gives this track the most.
+    const picks = questions.map((q) => {
+      const best = Math.max(...q.answers.map((a) => a.points[t.slug] ?? 0));
+      return [q.answers.findIndex((a) => (a.points[t.slug] ?? 0) === best)];
+    });
+    const { ranked, hash } = score(questions, picks);
     assert.equal(ranked[0].slug, t.slug);
     assert.equal(hash.length, 64);
-    assert.ok(Math.abs(ranked.reduce((s, r) => s + r.share, 0) - 1) < 1e-9);
+    assert.ok(ranked.every((r) => r.fit >= 0 && r.fit <= 1));
   }
   assert.equal(leaning({ research: 1, builders: 2 }), "builders");
 });

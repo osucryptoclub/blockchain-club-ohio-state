@@ -2,8 +2,8 @@
 
 import { useSyncExternalStore } from "react";
 import { Action } from "@/components/action";
-import type { Applications } from "@/content/applications";
-import { parts, phase } from "@/lib/applications";
+import { applications as configured, type Applications } from "@/content/applications";
+import { formatLong, formatTime, parts, phase, type Phase } from "@/lib/applications";
 
 // One shared clock, ticking once a second while anything is listening.
 let now = 0;
@@ -25,51 +25,121 @@ function subscribe(listener: () => void) {
   };
 }
 
-const dateFormat = new Intl.DateTimeFormat("en-US", {
-  timeZone: "America/New_York",
-  weekday: "long",
-  month: "long",
-  day: "numeric",
-  hour: "numeric",
-  minute: "2-digit",
-  timeZoneName: "short",
-});
+/** Where applications stand, or null before the page has a clock (server render). */
+export function usePhase(apps: Applications): Phase | null {
+  const time = useSyncExternalStore(subscribe, read, () => null);
+  return time === null ? null : phase(apps, time);
+}
 
 const units = ["days", "hours", "minutes", "seconds"] as const;
-const unitLabels = { days: "Days", hours: "Hours", minutes: "Minutes", seconds: "Seconds" };
+const labels = { days: "Days", hours: "Hours", minutes: "Minutes", seconds: "Seconds" };
+const short = { days: "Days", hours: "Hrs", minutes: "Min", seconds: "Sec" };
 
-function Cells({ values }: { values?: ReturnType<typeof parts> }) {
+function remainingOf(state: Phase | null) {
+  if (state?.state === "upcoming") return parts(state.remaining);
+  if (state?.state === "open" && state.remaining !== null) return parts(state.remaining);
+  return undefined;
+}
+
+/** Four cells: days, hours, minutes, seconds. */
+function Cells({ values, size = "md" }: { values?: ReturnType<typeof parts>; size?: "md" | "lg" }) {
+  const digits = size === "lg" ? "text-[clamp(2.25rem,8vw,6.5rem)]" : "text-[clamp(2rem,6.5vw,5rem)]";
   return (
-    <ol className="grid grid-cols-4 border-t border-l border-white/20" aria-hidden="true">
+    <ol className="grid grid-cols-4 border-t border-l border-white/25" aria-hidden="true">
       {units.map((u) => (
-        <li key={u} className="border-r border-b border-white/20 px-3 py-5 sm:px-6 sm:py-8">
+        <li key={u} className="border-r border-b border-white/25 bg-black/30 px-3 py-5 backdrop-blur-[2px] sm:px-6 sm:py-7">
           <span
             key={values?.[u]}
-            className={`block font-mono text-[clamp(2rem,6.5vw,5rem)] leading-none tabular-nums ${values ? "tick" : "text-white/30"}`}
+            className={`block font-mono leading-none tabular-nums ${digits} ${values ? "tick" : "text-white/40"}`}
           >
             {values ? String(values[u]).padStart(2, "0") : "––"}
           </span>
-          <span className="mt-3 block text-xs tracking-wider text-white/95 uppercase sm:text-sm">{unitLabels[u]}</span>
+          <span className="mt-3 block text-xs tracking-wider text-white uppercase sm:text-sm">
+            <span className="sm:hidden">{short[u]}</span>
+            <span className="max-sm:hidden">{labels[u]}</span>
+          </span>
         </li>
       ))}
     </ol>
   );
 }
 
-/** Counts down to the application window, then shows the form while it is open. */
-export function Countdown({ apps }: { apps: Applications }) {
-  const time = useSyncExternalStore(subscribe, read, () => null);
-  const state = time === null ? null : phase(apps, time);
-  const opens = apps.opens ? dateFormat.format(Date.parse(apps.opens)) : null;
-  const closes = apps.closes ? dateFormat.format(Date.parse(apps.closes)) : null;
+function Spoken({ values, what }: { values?: ReturnType<typeof parts>; what: string }) {
+  if (!values) return null;
+  // Read once, not every second.
+  return (
+    <p className="sr-only">
+      {values.days} days, {values.hours} hours, and {values.minutes} minutes until {what}.
+    </p>
+  );
+}
 
-  if (!apps.opens) {
+function Status({ dot, children }: { dot: string; children: React.ReactNode }) {
+  return (
+    <p className="flex items-center gap-3 font-semibold">
+      <span aria-hidden="true" className={`size-2.5 ${dot}`} />
+      {children}
+    </p>
+  );
+}
+
+/**
+ * The application countdown.
+ * - `panel`: status, deadline, the four cells, and how to apply. For the Join page.
+ * - `display`: large cells only, for a section that sets its own heading.
+ * - `line`: one sentence, for closing calls to action.
+ */
+export function Countdown({ apps = configured, variant = "panel" }: { apps?: Applications; variant?: "panel" | "display" | "line" }) {
+  const state = usePhase(apps);
+  const values = remainingOf(state);
+  const deadline = apps.deadline ? formatLong(apps.deadline) : null;
+  const closed = state?.state === "closed";
+  const upcoming = state?.state === "upcoming";
+  const what = upcoming ? "applications open" : "the application deadline";
+
+  if (variant === "line") {
+    if (!deadline && !apps.opens) return null;
+    return (
+      <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-semibold">
+        <span aria-hidden="true" className={`size-2.5 ${closed ? "bg-white/50" : "animate-pulse bg-white"}`} />
+        {closed ? (
+          <>Applications closed {deadline}.</>
+        ) : upcoming ? (
+          <>Applications open {apps.opens && formatLong(apps.opens)}.</>
+        ) : (
+          <>
+            Applications close {deadline}
+            {values && (
+              <span className="font-mono font-normal tabular-nums opacity-90">
+                · {values.days}d {String(values.hours).padStart(2, "0")}h {String(values.minutes).padStart(2, "0")}m{" "}
+                {String(values.seconds).padStart(2, "0")}s
+              </span>
+            )}
+          </>
+        )}
+      </p>
+    );
+  }
+
+  if (variant === "display") {
+    if (closed)
+      return (
+        <p className="wide max-w-[24ch] text-heading">
+          Applications closed on {deadline}. The next window will be announced here.
+        </p>
+      );
     return (
       <div>
-        <p className="flex items-center gap-3 font-semibold">
-          <span aria-hidden="true" className="size-2.5 bg-white" />
-          Date to be announced
-        </p>
+        <Cells values={values} size="lg" />
+        <Spoken values={values} what={what} />
+      </div>
+    );
+  }
+
+  if (!deadline && !apps.opens) {
+    return (
+      <div>
+        <Status dot="bg-white">Date to be announced</Status>
         <p className="mt-4 mb-10 max-w-[52ch] text-lead">
           Applications for {apps.cohort} open soon. The date is posted here first, with a countdown to the minute.
         </p>
@@ -78,60 +148,45 @@ export function Countdown({ apps }: { apps: Applications }) {
     );
   }
 
-  if (state?.state === "open") {
+  if (closed) {
     return (
       <div>
-        <p className="flex items-center gap-3 font-semibold">
-          <span aria-hidden="true" className="size-2.5 animate-pulse bg-white" />
-          Applications are open
+        <Status dot="bg-white/50">Applications have closed</Status>
+        <p className="mt-4 max-w-[52ch] text-lead">
+          Applications for {apps.cohort} closed on {deadline}. You can still come to meetings and events, and the next
+          window will be announced here.
         </p>
-        <p className="mt-4 mb-10 max-w-[52ch] text-lead">
-          Apply to {apps.cohort}
-          {closes ? ` by ${closes}.` : "."}
-        </p>
-        {apps.applyUrl ? (
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {upcoming ? (
+        <Status dot="bg-white">Applications open {apps.opens && formatLong(apps.opens)}</Status>
+      ) : (
+        <Status dot="animate-pulse bg-white">Applications are open</Status>
+      )}
+      <p className="mt-4 mb-10 max-w-[52ch] text-lead">
+        {deadline ? (
+          <>
+            Apply to {apps.cohort} by <strong className="font-semibold">{deadline}</strong>, {apps.deadline && formatTime(apps.deadline)}.
+          </>
+        ) : (
+          <>Apply to {apps.cohort}.</>
+        )}
+      </p>
+      <Cells values={values} />
+      <Spoken values={values} what={what} />
+      <div className="mt-10">
+        {apps.applyUrl && !upcoming ? (
           <Action href={apps.applyUrl} variant="inverse">
             Start your application
           </Action>
         ) : (
-          <p className="max-w-[52ch]">The application form link will be posted here shortly.</p>
+          <p className="max-w-[52ch]">The application form link will be posted right here. Until then, come to a meeting and choose your cohort.</p>
         )}
       </div>
-    );
-  }
-
-  if (state?.state === "closed") {
-    return (
-      <div>
-        <p className="flex items-center gap-3 font-semibold">
-          <span aria-hidden="true" className="size-2.5 bg-white/50" />
-          Applications have closed
-        </p>
-        <p className="mt-4 max-w-[52ch] text-lead">
-          Applications for {apps.cohort} closed{closes ? ` on ${closes}` : ""}. You can still come to meetings and
-          events, and the next window will be announced here.
-        </p>
-      </div>
-    );
-  }
-
-  const remaining = state?.state === "upcoming" ? parts(state.remaining) : undefined;
-  return (
-    <div>
-      <p className="flex items-center gap-3 font-semibold">
-        <span aria-hidden="true" className="size-2.5 bg-white" />
-        Applications open {opens}
-      </p>
-      <p className="mt-4 mb-10 max-w-[52ch] text-lead">
-        For {apps.cohort}
-        {closes ? `, through ${closes}` : ""}.
-      </p>
-      <Cells values={remaining} />
-      {remaining && (
-        <p className="sr-only" aria-live="off">
-          {remaining.days} days, {remaining.hours} hours, and {remaining.minutes} minutes until applications open.
-        </p>
-      )}
     </div>
   );
 }

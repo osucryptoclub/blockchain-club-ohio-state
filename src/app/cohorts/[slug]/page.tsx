@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
+import { Check } from "lucide-react";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { Action, TextLink } from "@/components/action";
 import { CohortGlyph } from "@/components/cohort-glyph";
 import { CohortBadge } from "@/components/cohort-logo";
+import { Countdown } from "@/components/countdown";
 import { Lab } from "@/components/labs/lab";
 import { Mark } from "@/components/logo";
 import { MonumentViewer } from "@/components/world/monument-viewer";
 import { PageHero } from "@/components/page-hero";
 import { PeopleGrid, PersonCard } from "@/components/person-card";
 import { ProjectList } from "@/components/project-list";
-import { Band, Cells, Closing, Split } from "@/components/section";
+import { Band, Cells, Closing, Rows, Split } from "@/components/section";
+import { joinSteps } from "@/content/community";
 import { cohorts, cohortStatuses } from "@/content/cohorts";
 import { getLab } from "@/content/labs";
 import { site } from "@/content/site";
@@ -30,7 +34,17 @@ export async function generateMetadata({ params }: PageProps<"/cohorts/[slug]">)
   };
 }
 
-export default async function CohortPage({ params }: PageProps<"/cohorts/[slug]">) {
+export default function CohortPage({ params }: PageProps<"/cohorts/[slug]">) {
+  // Everything here depends on the URL, so it renders inside a boundary and the
+  // shared shell (header, footer) can show at once on navigation.
+  return (
+    <Suspense fallback={<div className="min-h-svh bg-black" />}>
+      <CohortBody params={params} />
+    </Suspense>
+  );
+}
+
+async function CohortBody({ params }: Pick<PageProps<"/cohorts/[slug]">, "params">) {
   const cohort = getCohort((await params).slug);
   if (!cohort) notFound();
 
@@ -55,7 +69,7 @@ export default async function CohortPage({ params }: PageProps<"/cohorts/[slug]"
           projects[0] ? (
             <Action href="#projects">See what they’re building</Action>
           ) : (
-            <Action href="/join#apply">Apply to a cohort</Action>
+            <Action href="#how-to-apply">Apply to a cohort</Action>
           )
         }
       >
@@ -159,6 +173,48 @@ export default async function CohortPage({ params }: PageProps<"/cohorts/[slug]"
         </Split>
       )}
 
+      {track && (
+        <Split title="Is it for you?">
+          <div className="grid gap-12 sm:grid-cols-2">
+            <div>
+              <h3 className="mb-5 font-semibold">Who it suits</h3>
+              <ul className="rule border-t">
+                {track.fit.map((f) => (
+                  <li key={f} className="rule flex items-baseline gap-4 border-b py-4 text-lead">
+                    <span aria-hidden="true" className="size-2.5 shrink-0 bg-scarlet" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="mb-5 font-semibold">Skills you’ll build</h3>
+              <ul className="rule border-t">
+                {track.skills.map((sk) => (
+                  <li key={sk} className="rule flex items-baseline gap-4 border-b py-4 text-lead">
+                    <Check size={18} aria-hidden="true" className="shrink-0 translate-y-0.5" />
+                    {sk}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <p className="muted mt-8 max-w-[56ch]">No experience is required for any cohort. Not sure this is the one? <a href="/find-your-cohort" className="link">Take the cohort assessment</a>.</p>
+        </Split>
+      )}
+
+      <Split id="how-to-apply" title="How to apply" tone="scarlet">
+        <Countdown variant="line" />
+        <div className="mt-8">
+          <Rows items={joinSteps} ordered />
+        </div>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Action href="/join#apply" variant="inverse">
+            Apply to {cohort.name}
+          </Action>
+        </div>
+      </Split>
+
       {lab && (
         <section id="lab" aria-labelledby="lab-title" className="band rule border-t">
           <div className="shell">
@@ -171,7 +227,7 @@ export default async function CohortPage({ params }: PageProps<"/cohorts/[slug]"
         </section>
       )}
 
-      <Closing title="Want in on the next cohort?" href="/join#apply" label="See when applications open" />
+      <Closing title="Want in on the next cohort?" href="/join#apply" label="How to apply" />
     </>
   );
 }

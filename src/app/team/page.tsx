@@ -49,9 +49,10 @@ export default function Team() {
                   ))}
                 </PeopleGrid>
               ) : (
-                <p className="flex items-center gap-4">
+                <p className="flex flex-wrap items-center gap-x-4 gap-y-2">
                   <Mark className="h-6 w-9 text-scarlet" />
-                  {group.placeholder ?? "To be announced"}
+                  <span className="muted">{group.placeholder ?? "Names posted once confirmed."}</span>
+                  <TextLink href="/contact">Want this role? Get in touch</TextLink>
                 </p>
               )}
             </li>

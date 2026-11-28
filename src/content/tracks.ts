@@ -12,6 +12,10 @@ export type Track = {
   /** Short labels for the card. */
   keywords: string[];
   activities: string[];
+  /** What a member can expect to get better at. */
+  skills: string[];
+  /** Who tends to enjoy this cohort. Guidance, never a requirement. */
+  fit: string[];
   /** Slugs from src/content/areas.ts that this cohort works on. */
   areas: string[];
 };
@@ -32,6 +36,8 @@ export const tracks: Track[] = [
       "Hackathons and technical projects",
       "Open-source contributions",
     ],
+    skills: ["Solidity and smart contract testing", "Web apps that read and write to a chain", "Shipping code with review, in a team", "Agents that act on-chain"],
+    fit: ["You like making things work, and finding out why they broke", "You want to learn to code by building, or you already do and want a team", "You want work on GitHub you can show an employer"],
     areas: ["blockchain-development", "smart-contracts", "web3-dapps", "ai-blockchain"],
   },
   {
@@ -49,6 +55,8 @@ export const tracks: Track[] = [
       "Venture capital and Web3 startups",
       "Trading and risk management",
     ],
+    skills: ["Reading token supply and incentives", "Valuing a protocol from first principles", "Writing a thesis others can check", "Measuring and managing risk"],
+    fit: ["You follow markets and want to know what actually moves them", "You like building a case from evidence, then defending it", "You are thinking about finance, venture capital, or founding a company"],
     areas: ["digital-assets", "defi", "entrepreneurship"],
   },
   {
@@ -67,6 +75,8 @@ export const tracks: Track[] = [
       "AI and blockchain research",
       "Technical publications and reports",
     ],
+    skills: ["Reading papers and protocol specs", "Cryptography fundamentals", "On-chain data analysis", "Clear technical writing"],
+    fit: ["You read past the headline to find out how something works", "You enjoy math, cryptography, economics, or careful writing", "You would rather be right than first"],
     areas: ["research", "cryptography", "zero-knowledge", "ai-blockchain"],
   },
   {
@@ -85,6 +95,8 @@ export const tracks: Track[] = [
       "Sponsorships",
       "Conference and hackathon outreach",
     ],
+    skills: ["Brand and visual design", "Explaining technical ideas simply", "Planning and running events", "Building partner relationships"],
+    fit: ["You like design, writing, photography, or video", "You can explain a technical idea to someone who has never heard of it", "You like planning events and meeting new people"],
     areas: [],
   },
 ];

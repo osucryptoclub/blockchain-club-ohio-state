@@ -113,12 +113,15 @@ export function Cells({ items, columns: count = 3 }: { items: Entry[]; columns?:
 }
 
 /** Closing prompt used at the end of inner pages. */
-export function Closing({ title, href, label }: { title: string; href: string; label: string }) {
+export function Closing({ title, href, label, note }: { title: string; href: string; label: string; note?: ReactNode }) {
   return (
     <section className="relative isolate overflow-hidden bg-scarlet py-24 text-white lg:py-36">
       <LiquidMetal className="-z-10" />
       <div className="shell flex flex-wrap items-end justify-between gap-10">
-        <h2 className="rise wide max-w-[18ch] text-heading">{title}</h2>
+        <div>
+          <h2 className="rise wide max-w-[18ch] text-heading">{title}</h2>
+          {note && <div className="mt-5">{note}</div>}
+        </div>
         <Action href={href} variant="inverse">
           {label}
         </Action>

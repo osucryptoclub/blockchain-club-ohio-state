@@ -46,7 +46,7 @@ export const site: Site = {
       id: "groupme",
       label: "GroupMe",
       purpose: "Quick announcements and reminders",
-      url: null,
+      url: "https://tr.ee/kVGXRnQngC",
     },
     {
       id: "github",
@@ -66,7 +66,7 @@ export const site: Site = {
       purpose: "Photos and event announcements",
       url: "https://www.instagram.com/blockchainclub_ohiostate/",
     },
-    { id: "x", label: "X", purpose: "News and public posts", url: null },
+    { id: "x", label: "X", purpose: "News and public posts", url: "https://x.com/cryptoclubosu" },
   ],
 };
 

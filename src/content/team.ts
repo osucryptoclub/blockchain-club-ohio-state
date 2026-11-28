@@ -1,7 +1,7 @@
 /**
  * Leadership groups. People are assigned to a group in src/content/people.ts
  * with `team: { group: "<id>", role: "..." }`. A group with nobody assigned
- * shows its placeholder, or "To be announced".
+ * shows its placeholder, or "Names posted once confirmed."
  */
 
 import type { TeamGroupId } from "./people.ts";

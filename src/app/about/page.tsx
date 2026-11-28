@@ -3,6 +3,7 @@ import { Action } from "@/components/action";
 import { PageHero } from "@/components/page-hero";
 import { ScrollWords } from "@/components/scroll-words";
 import { Band, Cells, Closing, Rows, Split } from "@/components/section";
+import { campus } from "@/content/campus";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -50,6 +51,7 @@ export default function About() {
     <>
       <PageHero
         title="Students building what comes next."
+        photo={campus.universityHall}
         action={<Action href="/join">Join the Club</Action>}
       >
         {site.name} brings together students, developers, researchers, and founders who are interested in

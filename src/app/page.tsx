@@ -6,6 +6,7 @@ import { AreaExplorer } from "@/components/area-explorer";
 import { ChainDemo } from "@/components/chain-demo";
 import { ChannelList } from "@/components/channel-list";
 import { CohortCards } from "@/components/cohort-cards";
+import { DeadlineBand } from "@/components/deadline-band";
 import { EventKinds, EventList } from "@/components/event-list";
 import { LeaderCards } from "@/components/leader-cards";
 import { LiquidMetal } from "@/components/liquid-metal";
@@ -19,7 +20,7 @@ import { SponsorGrid } from "@/components/sponsor-grid";
 import { collaborate } from "@/content/community";
 import { labs } from "@/content/labs";
 import { projectKindList, projects } from "@/content/projects";
-import { applications } from "@/content/applications";
+import { campus } from "@/content/campus";
 import { cohortStatuses } from "@/content/cohorts";
 import { site } from "@/content/site";
 import { sponsors } from "@/content/sponsors";
@@ -147,7 +148,7 @@ export default async function Home() {
               <div className="mt-10 flex flex-wrap gap-3">
                 <Action href={`/cohorts/${cohort.slug}`}>Meet the cohort</Action>
                 <Action href="/join#apply" variant="outline">
-                  {applications.opens ? "Apply to the next one" : "Get notified for the next one"}
+                  How to apply
                 </Action>
               </div>
             </div>
@@ -170,6 +171,8 @@ export default async function Home() {
           </div>
         )}
       </section>
+
+      <DeadlineBand photo={campus.stadium} />
 
       <section id="leadership" className="band rule border-t">
         <div className="shell">

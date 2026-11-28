@@ -728,3 +728,83 @@ html[data-intro]:not([data-intro="out"]) main * {
     animation: none !important;
   }
 }
+
+/* Club assistant. Hidden while the introduction covers the page. */
+html[data-intro] .assistant {
+  display: none;
+}
+.assistant-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--color-scarlet);
+  animation: assistant-pulse 2.2s var(--ease-block, ease-out) infinite;
+  pointer-events: none;
+}
+.assistant-dot {
+  animation: assistant-dot 1.1s ease-in-out infinite;
+}
+.assistant-panel {
+  animation: assistant-open 260ms var(--ease-block, ease-out);
+  transform-origin: bottom right;
+}
+/* Leave the corner clear for the launcher. */
+.journey-bar > .shell {
+  padding-inline-end: max(5rem, clamp(1.25rem, 4vw, 4rem));
+}
+@media (min-width: 40rem) {
+  .journey-bar > .shell {
+    padding-inline-end: max(6rem, clamp(1.25rem, 4vw, 4rem));
+  }
+}
+@keyframes assistant-pulse {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+@keyframes assistant-dot {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+@keyframes assistant-open {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .assistant-pulse::after,
+  .assistant-dot,
+  .assistant-panel {
+    animation: none;
+  }
+}
+
+/* Campus photography: one treatment everywhere, so photos read as part of the brand. */
+.campus-photo {
+  filter: grayscale(0.4) contrast(1.08) brightness(0.92);
+  animation: campus-in 1.8s var(--ease-block) both;
+}
+@keyframes campus-in {
+  from {
+    transform: scale(1.06);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .campus-photo {
+    animation: none;
+  }
+}

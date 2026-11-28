@@ -1,28 +1,31 @@
 /**
- * The next cohort's application window. The Join page counts down to `opens`,
- * shows the apply button while the window is open, and says when it closed.
+ * Cohort applications. THE APPLICATION DEADLINE LIVES HERE, AND ONLY HERE.
+ * Every countdown, deadline message, and "apply by" line on the site reads
+ * `deadline` from this file, so changing it updates the whole site.
  *
- * Dates need a UTC offset: -05:00 in winter, -04:00 in summer. Leave `opens`
- * as null until the date is confirmed; the page then says it is coming soon.
+ * Dates need a UTC offset: -05:00 in winter (EST), -04:00 in summer (EDT).
  *
- * Example:
- *   cohort: "Builders, Spring 2027",
- *   opens: "2027-01-12T09:00:00-05:00",
- *   closes: "2027-01-26T23:59:00-05:00",
- *   applyUrl: "https://forms.gle/...",
+ * - `deadline`: when applications close. The countdowns count down to it,
+ *   then say applications have closed. null hides every countdown.
+ * - `opens`: optional. Set it only if applications open later than today;
+ *   until then the countdown counts to the opening instead.
+ * - `applyUrl`: the application form. While it is null, the site sends people
+ *   to the Join page and says the form link is coming. Set it and an
+ *   "Apply now" button appears everywhere.
  */
 
 export type Applications = {
+  /** Who is applying, finishing the sentence "Applications for …". */
   cohort: string;
+  deadline: string | null;
   opens: string | null;
-  closes: string | null;
-  /** The application form. The button only appears once this is set. */
   applyUrl: string | null;
 };
 
 export const applications: Applications = {
-  cohort: "the next Builders cohort",
+  cohort: "all four cohorts",
+  // January 23, 2027, end of the day in Columbus.
+  deadline: "2027-01-23T23:59:59-05:00",
   opens: null,
-  closes: null,
   applyUrl: null,
 };
